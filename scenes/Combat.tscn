@@ -1,0 +1,409 @@
+[gd_scene format=3 uid="uid://2ichuyjejgy1"]
+
+[ext_resource type="Script" uid="uid://cceoapxpphha4" path="res://scripts/combat.gd" id="1_k070p"]
+[ext_resource type="Texture2D" uid="uid://cnc8qfskksu2n" path="res://assets/CombatBackground.png" id="2_hrlpu"]
+[ext_resource type="Texture2D" uid="uid://bflbss4o1k8ba" path="res://assets/textures/Panel_1.png" id="3_hrlpu"]
+[ext_resource type="LabelSettings" uid="uid://nix8gqkv336j" path="res://Fuente.tres" id="4_0qy8o"]
+[ext_resource type="Texture2D" uid="uid://68avsqig41je" path="res://assets/effects/frame0000.png" id="4_b4pb0"]
+[ext_resource type="Script" uid="uid://ctmeoh6ntfn6m" path="res://scripts/AnimatedBar.gd" id="4_mak3c"]
+[ext_resource type="Texture2D" uid="uid://bkxqc0rwfwgy1" path="res://assets/effects/frame0001.png" id="5_13pag"]
+[ext_resource type="Texture2D" uid="uid://bevg74783lt77" path="res://assets/skills/ataque_paladin.png" id="5_70oqa"]
+[ext_resource type="Texture2D" uid="uid://cgc8mjstybuw" path="res://assets/effects/frame0002.png" id="6_040v5"]
+[ext_resource type="Texture2D" uid="uid://cb57dn1fe3kyu" path="res://assets/skills/especial_mago.png" id="6_mak3c"]
+[ext_resource type="Texture2D" uid="uid://dp1gr5u8cvsib" path="res://assets/skills/definitiva_berserker.png" id="7_3q7sh"]
+[ext_resource type="Texture2D" uid="uid://du43emc7gklvt" path="res://assets/effects/frame0003.png" id="7_xuxku"]
+[ext_resource type="Texture2D" uid="uid://dixs4iijb6ydn" path="res://assets/effects/frame0004.png" id="8_7qnt1"]
+[ext_resource type="Texture2D" uid="uid://cwhhvhshqn25m" path="res://assets/effects/frame0005.png" id="9_mwu67"]
+[ext_resource type="Texture2D" uid="uid://bbdfp7r55amql" path="res://assets/effects/frame0006.png" id="10_r8g7h"]
+[ext_resource type="Texture2D" uid="uid://c208nntkn3vj3" path="res://assets/effects/frame0007.png" id="11_pgor7"]
+[ext_resource type="Texture2D" uid="uid://dq18apmi752so" path="res://assets/effects/frame0008.png" id="12_ak6aq"]
+[ext_resource type="Texture2D" uid="uid://dxgdondmpus3" path="res://assets/effects/frame0009.png" id="13_il00m"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0qy8o"]
+texture = ExtResource("3_hrlpu")
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1c4m3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_b4pb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_13pag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_040v5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xuxku")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7qnt1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_mwu67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_r8g7h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_pgor7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ak6aq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_il00m")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 24.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qy8o"]
+bg_color = Color(0, 0, 0, 0.8039216)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tp2sa"]
+bg_color = Color(0.68959117, 0.15909427, 0.20975819, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tp2sa"]
+texture = ExtResource("3_hrlpu")
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b4pb0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_b4pb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_13pag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_040v5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xuxku")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7qnt1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_mwu67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_r8g7h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_pgor7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ak6aq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_il00m")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 24.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_akg4l"]
+bg_color = Color(0.6901961, 0.16078432, 0.20784314, 1)
+
+[node name="Combat" type="Control" unique_id=74895466]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k070p")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="." unique_id=375876848]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_right = 128.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hrlpu")
+
+[node name="HeroePanel" type="Panel" parent="Background" unique_id=631474765]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0085227275
+anchor_top = 0.014322917
+anchor_right = 0.21661931
+anchor_bottom = 0.5598958
+theme_override_styles/panel = SubResource("StyleBoxTexture_0qy8o")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/HeroePanel" unique_id=137302828]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06825939
+anchor_top = 0.07637232
+anchor_right = 0.9556314
+anchor_bottom = 0.96181387
+offset_bottom = -15.0
+theme_override_constants/separation = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="HeroeImage" type="TextureRect" parent="Background/HeroePanel/VBoxContainer" unique_id=742564780]
+custom_minimum_size = Vector2(260, 220)
+layout_mode = 2
+expand_mode = 3
+stretch_mode = 5
+
+[node name="HeroeHitAnim" type="AnimatedSprite2D" parent="Background/HeroePanel/VBoxContainer/HeroeImage" unique_id=1090706174]
+visible = false
+position = Vector2(127, 128)
+scale = Vector2(3.710937, 3.710937)
+sprite_frames = SubResource("SpriteFrames_1c4m3")
+animation = &"hit"
+frame = 9
+frame_progress = 1.0
+
+[node name="HeroeEfectosContainer" type="HBoxContainer" parent="Background/HeroePanel/VBoxContainer" unique_id=336196722]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="BarraSaludHeroe" type="ProgressBar" parent="Background/HeroePanel/VBoxContainer" unique_id=648802925]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_0qy8o")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tp2sa")
+show_percentage = false
+script = ExtResource("4_mak3c")
+
+[node name="SaludLabel" type="Label" parent="Background/HeroePanel/VBoxContainer" unique_id=1953908069]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+label_settings = ExtResource("4_0qy8o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeroeNameLabel" type="Label" parent="Background/HeroePanel/VBoxContainer" unique_id=769107481]
+layout_mode = 2
+label_settings = ExtResource("4_0qy8o")
+horizontal_alignment = 1
+
+[node name="HeroeStatsLabel" type="Label" parent="Background/HeroePanel/VBoxContainer" unique_id=1176601418]
+layout_mode = 2
+label_settings = ExtResource("4_0qy8o")
+horizontal_alignment = 1
+
+[node name="EnemigoPanel" type="Panel" parent="Background" unique_id=634415387]
+layout_mode = 0
+anchor_left = 0.68678975
+anchor_top = 0.014322917
+anchor_right = 0.89985794
+anchor_bottom = 0.5598958
+theme_override_styles/panel = SubResource("StyleBoxTexture_tp2sa")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/EnemigoPanel" unique_id=478972067]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06333333
+anchor_top = 0.07637232
+anchor_right = 0.93
+anchor_bottom = 0.9260143
+theme_override_constants/separation = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="EnemigoImage" type="TextureRect" parent="Background/EnemigoPanel/VBoxContainer" unique_id=947127204]
+custom_minimum_size = Vector2(260, 220)
+layout_mode = 2
+expand_mode = 3
+stretch_mode = 5
+
+[node name="EnemigoHitAnim" type="AnimatedSprite2D" parent="Background/EnemigoPanel/VBoxContainer/EnemigoImage" unique_id=922494833]
+visible = false
+position = Vector2(133, 132)
+scale = Vector2(3.2812498, 3.0625)
+sprite_frames = SubResource("SpriteFrames_b4pb0")
+animation = &"hit"
+
+[node name="EnemigoEfectosContainer" type="HBoxContainer" parent="Background/EnemigoPanel/VBoxContainer" unique_id=112444527]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="BarraSaludEnemigo" type="ProgressBar" parent="Background/EnemigoPanel/VBoxContainer" unique_id=105687447]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_0qy8o")
+theme_override_styles/fill = SubResource("StyleBoxFlat_akg4l")
+show_percentage = false
+script = ExtResource("4_mak3c")
+
+[node name="SaludLabel" type="Label" parent="Background/EnemigoPanel/VBoxContainer" unique_id=1683453440]
+layout_mode = 2
+label_settings = ExtResource("4_0qy8o")
+horizontal_alignment = 1
+
+[node name="EnemigoNameLabel" type="Label" parent="Background/EnemigoPanel/VBoxContainer" unique_id=1849054933]
+layout_mode = 2
+label_settings = ExtResource("4_0qy8o")
+horizontal_alignment = 1
+
+[node name="EnemigoStatsLabel" type="Label" parent="Background/EnemigoPanel/VBoxContainer" unique_id=393965008]
+layout_mode = 2
+label_settings = ExtResource("4_0qy8o")
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Background/EnemigoPanel" unique_id=247644035]
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.027
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.10000038
+offset_top = -20.0
+offset_right = 13.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_hrlpu")
+expand_mode = 1
+
+[node name="ActionButtons" type="HBoxContainer" parent="Background" unique_id=653079317]
+custom_minimum_size = Vector2(940, 80)
+layout_mode = 0
+anchor_left = 0.022727273
+anchor_top = 0.5598958
+anchor_right = 0.69034094
+anchor_bottom = 0.6640625
+offset_right = -6.1035156e-05
+metadata/_edit_use_anchors_ = true
+
+[node name="AtacarButton" type="TextureButton" parent="Background/ActionButtons" unique_id=1641113028]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("5_70oqa")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="EspecialButton" type="TextureButton" parent="Background/ActionButtons" unique_id=1192525207]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("6_mak3c")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="DefinitivaButton" type="TextureButton" parent="Background/ActionButtons" unique_id=1982013886]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("7_3q7sh")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="TurnoLabel" type="RichTextLabel" parent="Background" unique_id=1056108515]
+custom_minimum_size = Vector2(280, 80)
+layout_mode = 0
+anchor_left = 0.5823864
+anchor_top = 0.5598958
+anchor_right = 0.9019886
+anchor_bottom = 0.6640625
+theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/bold_font_size = 25
+theme_override_font_sizes/bold_italics_font_size = 25
+theme_override_font_sizes/italics_font_size = 25
+theme_override_font_sizes/mono_font_size = 25
+bbcode_enabled = true
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CombatLog" type="RichTextLabel" parent="Background" unique_id=1167402486]
+layout_mode = 0
+anchor_left = 0.007102273
+anchor_top = 0.6640625
+anchor_right = 0.9019886
+anchor_bottom = 0.9244792
+bbcode_enabled = true
+scroll_following = true
+metadata/_edit_use_anchors_ = true
+
+[node name="CenterArea" type="HBoxContainer" parent="Background" unique_id=1836171446]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.22869319
+anchor_top = 0.026041666
+anchor_right = 0.67826706
+anchor_bottom = 0.546875
+offset_right = 6.1035156e-05
+grow_horizontal = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="InventarioPanel" type="Panel" parent="Background/CenterArea" unique_id=2133516435]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventarioTitle" type="Label" parent="Background/CenterArea/InventarioPanel" unique_id=1642455702]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+
+[node name="InventarioGrid" type="GridContainer" parent="Background/CenterArea/InventarioPanel" unique_id=1369842840]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 5
+
+[node name="DadoPanel" type="Panel" parent="Background/CenterArea" unique_id=775553138]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/CenterArea/DadoPanel" unique_id=1182949844]
+layout_mode = 0
+anchor_left = 0.13592233
+anchor_top = 0.057536773
+anchor_right = 0.8414239
+anchor_bottom = 0.8990809
+theme_override_constants/separation = 12
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TurnoLabel" type="Label" parent="Background/CenterArea/DadoPanel/VBoxContainer" unique_id=2099688482]
+layout_mode = 2
+size_flags_horizontal = 5
+
+[node name="DadoTexture" type="TextureRect" parent="Background/CenterArea/DadoPanel/VBoxContainer" unique_id=1861454671]
+clip_contents = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TirarDadoButton" type="Button" parent="Background/CenterArea/DadoPanel/VBoxContainer" unique_id=593853974]
+layout_mode = 2
+
+[node name="ResultadoLabel" type="Label" parent="Background/CenterArea/DadoPanel/VBoxContainer" unique_id=256051862]
+layout_mode = 2
+size_flags_horizontal = 5
+horizontal_alignment = 1

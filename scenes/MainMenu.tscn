@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://uodm4gafur0d"]
+
+[ext_resource type="Script" uid="uid://n8xo11f34wa2" path="res://scripts/MainMenu.gd" id="1_yqorp"]
+[ext_resource type="Texture2D" uid="uid://c8iro48gmeken" path="res://assets/MenuBackground.png" id="2_2wh52"]
+[ext_resource type="Texture2D" uid="uid://bjrao1ku8k8bv" path="res://assets/Logo.png" id="3_ow34m"]
+
+[node name="MainMenu" type="Control" unique_id=1288377322]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yqorp")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1632167263]
+layout_mode = 0
+anchor_left = -0.05546875
+anchor_right = 1.06875
+anchor_bottom = 1.0611111
+texture = ExtResource("2_2wh52")
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLabel" type="Label" parent="Background" unique_id=121590330]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LogoTexture" type="TextureRect" parent="Background" unique_id=1681319070]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31480193
+anchor_top = 0.10340314
+anchor_right = 0.68519807
+anchor_bottom = 0.29057592
+offset_left = 3.0517578e-05
+texture = ExtResource("3_ow34m")
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayButton" type="Button" parent="Background" unique_id=163326251]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+anchor_left = 0.43224463
+anchor_top = 0.34685865
+anchor_right = 0.57123
+anchor_bottom = 0.41230366
+offset_right = 6.1035156e-05
+text = "Jugar"
+metadata/_edit_use_anchors_ = true
+
+[node name="QuitButton" type="Button" parent="Background" unique_id=161620345]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+anchor_left = 0.43293953
+anchor_top = 0.42931938
+anchor_right = 0.5719249
+anchor_bottom = 0.4947644
+offset_right = 6.1035156e-05
+text = "Salir"
+metadata/_edit_use_anchors_ = true

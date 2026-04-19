@@ -1,0 +1,198 @@
+[gd_scene format=3 uid="uid://krtnprnw03oj"]
+
+[ext_resource type="Script" uid="uid://cf32w83wabpd8" path="res://scripts/market.gd" id="1_byv1b"]
+[ext_resource type="Texture2D" uid="uid://b6bo1bl4kgqw" path="res://assets/MarketBackground.png" id="2_0lfoy"]
+[ext_resource type="LabelSettings" uid="uid://nix8gqkv336j" path="res://Fuente.tres" id="3_ue5tp"]
+
+[node name="Market" type="Control" unique_id=933650696]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_byv1b")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="." unique_id=1394297673]
+layout_mode = 0
+anchor_right = 1.0054687
+anchor_bottom = 1.0013889
+texture = ExtResource("2_0lfoy")
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLabel" type="Label" parent="Background" unique_id=1707831143]
+layout_mode = 0
+anchor_left = 0.41958043
+anchor_top = 0.041608877
+anchor_right = 0.57498056
+anchor_bottom = 0.097087376
+text = "Mercado"
+label_settings = ExtResource("3_ue5tp")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="OroLabel" type="Label" parent="Background" unique_id=705641666]
+layout_mode = 0
+anchor_left = 0.41958043
+anchor_top = 0.110957004
+anchor_right = 0.57498056
+anchor_bottom = 0.15950069
+text = "Oro: "
+label_settings = ExtResource("3_ue5tp")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemsContainer" type="HBoxContainer" parent="Background" unique_id=1608667088]
+layout_mode = 0
+anchor_left = 0.06993007
+anchor_top = 0.19417475
+anchor_right = 0.92463094
+anchor_bottom = 0.8183079
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemSlot1" type="Panel" parent="Background/ItemsContainer" unique_id=2037891117]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/ItemsContainer/ItemSlot1" unique_id=332202901]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 0
+anchor_top = 0.11333334
+anchor_bottom = 0.7311111
+offset_left = 143.0
+offset_right = 323.0
+offset_bottom = -5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemImage" type="TextureRect" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=590768776]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemName" type="Label" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=1304724558]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/line_spacing = 2
+label_settings = ExtResource("3_ue5tp")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ItemDesc" type="Label" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=1358937177]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/line_spacing = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ItemCosto" type="Label" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=400669299]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/line_spacing = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=2034987617]
+layout_mode = 2
+
+[node name="ItemSlot2" type="Panel" parent="Background/ItemsContainer" unique_id=729549316]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/ItemsContainer/ItemSlot2" unique_id=1341110118]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 0
+anchor_top = 0.11777778
+anchor_bottom = 0.7355555
+offset_left = 459.0
+offset_right = 639.0
+offset_bottom = -5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemImage" type="TextureRect" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=1280485413]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemName" type="Label" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=771224234]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 2
+label_settings = ExtResource("3_ue5tp")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ItemDesc" type="Label" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=736506273]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ItemCosto" type="Label" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=1546972734]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=1846019462]
+layout_mode = 2
+
+[node name="ItemSlot3" type="Panel" parent="Background/ItemsContainer" unique_id=231508499]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/ItemsContainer/ItemSlot3" unique_id=326375018]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 0
+anchor_top = 0.11777778
+anchor_bottom = 0.7355555
+offset_left = 761.0
+offset_right = 941.0
+offset_bottom = -5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemImage" type="TextureRect" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=1217791720]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemName" type="Label" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=1545714015]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 2
+label_settings = ExtResource("3_ue5tp")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ItemDesc" type="Label" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=1952238164]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ItemCosto" type="Label" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=402849006]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=657990383]
+layout_mode = 2
+
+[node name="SalirButton" type="Button" parent="Background" unique_id=1673361100]
+layout_mode = 0
+anchor_left = 0.3807304
+anchor_top = 0.8599168
+anchor_right = 0.6138306
+anchor_bottom = 0.94313455
+text = "Salir"
+metadata/_edit_use_anchors_ = true

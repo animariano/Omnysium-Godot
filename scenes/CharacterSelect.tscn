@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://ds5ypnoqkmima"]
+
+[ext_resource type="Script" uid="uid://c1vrk0jbxebyo" path="res://scripts/character_select.gd" id="1_uq28m"]
+[ext_resource type="Texture2D" uid="uid://boq65egrjmyyx" path="res://assets/CharacterSelectBackground.png" id="2_d8y2c"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yyo81"]
+font_size = 34
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
+[node name="CharacterSelect" type="Control" unique_id=947256988]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uq28m")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1768382197]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.1
+anchor_bottom = 1.0666667
+offset_right = -39.0
+offset_bottom = -44.00006
+texture = ExtResource("2_d8y2c")
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLabel" type="Label" parent="Background" unique_id=622779017]
+layout_mode = 0
+anchor_left = 0.34550768
+anchor_top = 0.089779004
+anchor_right = 0.55880207
+anchor_bottom = 0.15469614
+offset_left = -3.0517578e-05
+offset_right = -6.1035156e-05
+text = "Elige tu personaje"
+label_settings = SubResource("LabelSettings_yyo81")
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background" unique_id=740620542]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 40)
+theme_override_constants/separation = 40
+alignment = 1

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://6xtf3pfyp5xj"]
+
+[ext_resource type="Script" uid="uid://3h885m4sujy5" path="res://scripts/GameOver.gd" id="1_vuicl"]
+[ext_resource type="Texture2D" uid="uid://ddmkk8pwc0va0" path="res://assets/GameOverBackground.png" id="2_4noiy"]
+[ext_resource type="Texture2D" uid="uid://bhc4jh23iodgv" path="res://assets/defeatLogo.png" id="3_gijjb"]
+
+[node name="GameOver" type="Control" unique_id=646867887]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vuicl")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="." unique_id=1382993972]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0765625
+anchor_top = -0.08194444
+anchor_right = 1.0648438
+anchor_bottom = 1.0527778
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4noiy")
+metadata/_edit_use_anchors_ = true
+
+[node name="LogoImage" type="TextureRect" parent="Background" unique_id=1528367733]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.5
+offset_top = -206.5
+offset_right = 349.9685
+offset_bottom = -33.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_gijjb")
+metadata/_edit_use_anchors_ = true
+
+[node name="MenuButton" type="Button" parent="Background" unique_id=198797929]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 519.0
+offset_right = 880.0
+offset_bottom = 579.0
+text = "Continuar"
+metadata/_edit_use_anchors_ = true

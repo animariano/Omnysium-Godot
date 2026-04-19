@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://sr0tgdtxfue7"]
+
+[ext_resource type="Script" uid="uid://dpjrwus0mjlkq" path="res://scripts/Event.gd" id="1_46xpc"]
+[ext_resource type="Texture2D" uid="uid://cod0saie75uso" path="res://assets/EventBackground.png" id="2_hjsmv"]
+[ext_resource type="LabelSettings" uid="uid://nix8gqkv336j" path="res://Fuente.tres" id="3_cejff"]
+
+[node name="Event" type="Control" unique_id=624697834]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_46xpc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="." unique_id=1277696721]
+layout_mode = 0
+anchor_right = 1.1
+anchor_bottom = 1.0666667
+offset_bottom = -6.1035156e-05
+texture = ExtResource("2_hjsmv")
+metadata/_edit_use_anchors_ = true
+
+[node name="EventTitle" type="Label" parent="Background" unique_id=1699099243]
+layout_mode = 0
+anchor_left = 0.34801137
+anchor_top = 0.0390625
+anchor_right = 0.56107956
+anchor_bottom = 0.104166664
+text = "Evento"
+label_settings = ExtResource("3_cejff")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="EventImage" type="TextureRect" parent="Background" unique_id=1079167744]
+layout_mode = 0
+anchor_left = 0.09943182
+anchor_top = 0.13020833
+anchor_right = 0.3125
+anchor_bottom = 0.5208333
+expand_mode = 3
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="EventLog" type="RichTextLabel" parent="Background" unique_id=434690970]
+layout_mode = 0
+anchor_left = 0.35511363
+anchor_top = 0.13020833
+anchor_right = 0.80965906
+anchor_bottom = 0.5208333
+theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/bold_font_size = 25
+theme_override_font_sizes/bold_italics_font_size = 25
+theme_override_font_sizes/italics_font_size = 25
+theme_override_font_sizes/mono_font_size = 25
+bbcode_enabled = true
+scroll_following = true
+metadata/_edit_use_anchors_ = true
+
+[node name="DadoTexture" type="TextureRect" parent="Background" unique_id=1811562475]
+layout_mode = 0
+anchor_left = 0.09943182
+anchor_top = 0.546875
+anchor_right = 0.2059659
+anchor_bottom = 0.7421875
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ResultadoLabel" type="Label" parent="Background" unique_id=2014255688]
+layout_mode = 0
+anchor_left = 0.22017045
+anchor_top = 0.6119792
+anchor_right = 0.3622159
+anchor_bottom = 0.6640625
+metadata/_edit_use_anchors_ = true
+
+[node name="OpcionesContainer" type="VBoxContainer" parent="Background" unique_id=1267303624]
+layout_mode = 0
+anchor_left = 0.35511363
+anchor_top = 0.546875
+anchor_right = 0.80965906
+anchor_bottom = 0.8072917
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="ContinuarButton" type="Button" parent="Background" unique_id=35347795]
+layout_mode = 0
+anchor_left = 0.34801137
+anchor_top = 0.8203125
+anchor_right = 0.56107956
+anchor_bottom = 0.8984375
+text = "Continuar"
+metadata/_edit_use_anchors_ = true
