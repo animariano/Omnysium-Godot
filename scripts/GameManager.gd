@@ -18,7 +18,7 @@ var personajes_pool = [
         "nombre": "Paladín", "clase": "Paladin",
         "salud": 8, "ataque": 4,
         "habilidad_especial": "Curar (Recupera 4 de salud)",
-        "habilidad_definitiva": "Golpe Sanador (Ataca y te cura 3)",
+        "habilidad_definitiva": "Golpe Sanador (Ataca y sana la misma cantidad)",
         "cooldown_definitiva": 3
     },
     {
@@ -57,6 +57,8 @@ var habilidad_especial_usada = 0
 var definitiva_cooldown = 0
 var contador_mercado = 0
 var cooldown_definitiva_base = 3
+var especial_cooldown = 0
+var cooldown_especial_base = 2  # cada 2 combates
 
 func reiniciar():
     efectos_heroe = []
@@ -66,6 +68,7 @@ func reiniciar():
     enemigo_actual_index = 0
     habilidad_especial_usada = false
     definitiva_cooldown = 0 
+    especial_cooldown = 0
     contador_mercado = 0
     heroe = {"nombre":"","clase":"","salud":0,"ataque":0,"oro":0,
              "habilidad_especial":"","habilidad_definitiva":"","escudo_fuego":false}
@@ -103,6 +106,8 @@ var items_pool = [
     {"id": "idolo_abismo",      "nombre": "Ídolo del Abismo",       "desc": "+1 ataque permanente por turno, pero perdés 1 salud","costo": 6, "sprite": "idolo_abismo.png"},
     {"id": "filo_creciente",    "nombre": "Filo Creciente",         "desc": "Cada turno que atacás, +1 ataque acumulativo",      "costo": 7,  "sprite": "filo_creciente.png"},
     {"id": "sangre_caliente",   "nombre": "Sangre Caliente",        "desc": "Si fallás un ataque, el siguiente hace daño doble", "costo": 6,  "sprite": "sangre_caliente.png"},
+    {"id": "daga_maldita", "nombre": "Daga Maldita", "desc": "+2 salud, +2 ataque. Encontrada en la cueva.", "costo": 0, "sprite": "daga_maldita.png"},
+    {"id": "daga_maldita", "nombre": "Daga Maldita", "desc": "+2 salud, +2 ataque.", "costo": 0, "sprite": "daga_maldita.png", "vendible": false},
 ]
 
 # Items ya comprados (no vuelven a aparecer)
@@ -110,7 +115,7 @@ var items_comprados: Array = []
 
 func get_items_disponibles(cantidad: int) -> Array:
     var disponibles = items_pool.filter(func(item):
-        return not items_comprados.has(item.id)
+        return not items_comprados.has(item.id) and item.get("vendible", true)
     )
     disponibles.shuffle()
     return disponibles.slice(0, cantidad)

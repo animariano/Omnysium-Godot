@@ -4,7 +4,8 @@ var salud_enemigo = 0
 var salud_maxima_enemigo = 0 
 var ataque_enemigo = 0
 var turno_jugador = true
-var habilidad_especial_usada = false
+var especial_cooldown_turnos = 0
+var ESPECIAL_COOLDOWN = 2 
 var esperando_esquive = false
 var dano_entrante = 0
 var es_critico = false
@@ -103,7 +104,7 @@ func actualizar_ui():
     # Botones de acción solo activos en turno del jugador y sin esquive pendiente
     var puede_actuar = turno_jugador and not esperando_esquive
     $Background/ActionButtons/AtacarButton.disabled = not puede_actuar
-    $Background/ActionButtons/EspecialButton.disabled = not puede_actuar or habilidad_especial_usada
+    $Background/ActionButtons/EspecialButton.disabled = not puede_actuar or especial_cooldown_turnos > 0
     $Background/ActionButtons/DefinitivaButton.disabled = not puede_actuar or GameManager.definitiva_cooldown > 0
 func log_combate(texto: String):
     $Background/CombatLog.append_text("\n" + texto)
@@ -232,25 +233,26 @@ func _on_atacar():
     chequear_muerte_enemigo()
 
 func _on_especial():
-    if habilidad_especial_usada:
+    if especial_cooldown_turnos > 0:
         return
-    habilidad_especial_usada = true
+    especial_cooldown_turnos = ESPECIAL_COOLDOWN
     turno_jugador = false
+    # Efecto visual — se apaga skill
+    $Background/ActionButtons/EspecialButton.modulate = Color(0.3, 0.3, 0.3)
     var h = GameManager.heroe
-
     match h.clase:
         "Paladin":
-            GameManager.heroe.salud = min(h.salud + 3, h.salud_maxima) 
-            log_combate("[color=green]Usaste Curar. Tu salud: %d[/color]" % GameManager.heroe.salud)
+            GameManager.heroe.salud = min(h.salud + 3, h.salud_maxima)
+            log_combate("[color=cyan]Usaste Curar. Tu salud: %d[/color]" % GameManager.heroe.salud)
         "Mago":
             var dano = max(1, h.ataque / 2)
-            animar_golpe("enemigo") 
             salud_enemigo -= dano
+            animar_golpe("enemigo")
             log_combate("[color=cyan]Bola de Fuego! Hiciste %d de daño directo.[/color]" % dano)
         "Berserker":
             var dano = h.ataque * 2
-            animar_golpe("enemigo") 
             salud_enemigo -= dano
+            animar_golpe("enemigo")
             GameManager.heroe.salud = max(1, h.salud / 2)
             log_combate("[color=cyan]Cabezazo! Hiciste %d de daño. Tu salud: %d[/color]" % [dano, GameManager.heroe.salud])
 
@@ -438,6 +440,13 @@ func aplicar_dano_entrante():
         log_combate("[color=yellow]¡La Tablilla de Alma te salvó! Reivís con 1 de salud.[/color]")
 
 func iniciar_turno_jugador():
+    if especial_cooldown_turnos > 0:
+        especial_cooldown_turnos -= 1
+
+    if especial_cooldown_turnos == 0:
+        $Background/ActionButtons/EspecialButton.modulate = Color(1, 1, 1)
+
+    turno_jugador = true
     # Aturdido — pierde el turno
     if GameManager.tiene_efecto("heroe", "aturdido"):
         log_combate("[color=yellow]💫 Estás aturdido y perdés el turno.[/color]")
@@ -469,14 +478,14 @@ func iniciar_turno_jugador():
     # Runa de Poder Maldito
     if GameManager.items_comprados.has("runa_poder"):
         GameManager.heroe.salud -= 1
-        animar_golpe("objetivo: Heroe")
+        animar_golpe("Heroe")
         log_combate("[color=red]Runa de Poder: -1 salud.[/color]")
         if GameManager.heroe.salud <= 0:
             await get_tree().create_timer(1.5).timeout
             get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
             return
 
-    turno_jugador = true
+    #turno_jugador = true
     actualizar_ui()
 
 # ─── FIN DE COMBATE ──────────────────────────────────────────────
@@ -555,7 +564,7 @@ func configurar_botones_accion():
     btn_atacar.tooltip_text    = "Atacar\nTirás el dado. 1-3 acierta."
     btn_especial.tooltip_text  = h.habilidad_especial
     
-    # Tooltip muestra si está en cooldown
+    # Tooltip muestra si algun skill esta en cd
     if GameManager.definitiva_cooldown > 0:
         btn_definitiva.tooltip_text = h.habilidad_definitiva + "\n⏳ Disponible en %d combate/s" % GameManager.definitiva_cooldown
         btn_definitiva.modulate = Color(0.3, 0.3, 0.3)  # gris oscuro
@@ -563,6 +572,12 @@ func configurar_botones_accion():
         btn_definitiva.tooltip_text = h.habilidad_definitiva + "\n(Cooldown: 3 combates)"
         btn_definitiva.modulate = Color(1, 1, 1)  # color normal
         
+    if GameManager.especial_cooldown > 0:
+        btn_especial.tooltip_text = h.habilidad_especial + "\n⏳ Disponible en %d turnos/s" % GameManager.especial_cooldown
+        btn_especial.modulate = Color(0.3, 0.3, 0.3)
+    else:
+        btn_especial.tooltip_text = h.habilidad_especial + "\n(Cooldown: %d turno/s)" % GameManager.cooldown_especial_base
+        btn_especial.modulate = Color(1, 1, 1)    
 
 
 func procesar_efectos_heroe():
