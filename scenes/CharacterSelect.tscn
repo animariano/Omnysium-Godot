@@ -28,24 +28,26 @@ texture = ExtResource("2_d8y2c")
 metadata/_edit_use_anchors_ = true
 
 [node name="TitleLabel" type="Label" parent="Background" unique_id=622779017]
-layout_mode = 0
-anchor_left = 0.34550768
-anchor_top = 0.089779004
-anchor_right = 0.55880207
-anchor_bottom = 0.15469614
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.34446025
+anchor_top = 0.028645834
+anchor_right = 0.55775464
+anchor_bottom = 0.09356297
 offset_left = -3.0517578e-05
 offset_right = -6.1035156e-05
 text = "Elige tu personaje"
 label_settings = SubResource("LabelSettings_yyo81")
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Background" unique_id=740620542]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(60, 40)
-theme_override_constants/separation = 40
-alignment = 1
+[node name="ScrollContainer" type="ScrollContainer" parent="Background" unique_id=1020016782]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 80.0
+offset_right = 1190.0
+offset_bottom = 700.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/ScrollContainer" unique_id=1016874870]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16

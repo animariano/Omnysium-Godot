@@ -19,7 +19,7 @@ var personajes_pool = [
         "salud": 8, "ataque": 4,
         "habilidad_especial": "Curar (Recupera 4 de salud)",
         "habilidad_definitiva": "Golpe Sanador (Ataca y sana la misma cantidad)",
-        "cooldown_definitiva": 3
+        "cooldown_definitiva": 2
     },
     {
         "nombre": "Mago", "clase": "Mago",
@@ -33,7 +33,7 @@ var personajes_pool = [
         "salud": 6, "ataque": 4,
         "habilidad_especial": "Cabezazo (Doble daño, mitad de salud)",
         "habilidad_definitiva": "Arremetida Suicida (Triple daño, quedás a 1)",
-        "cooldown_definitiva": 3
+        "cooldown_definitiva": 2
     },
     # ← agregar personajes nuevos acá
 ]
