@@ -18,6 +18,20 @@
 [ext_resource type="Texture2D" uid="uid://c208nntkn3vj3" path="res://assets/effects/frame0007.png" id="11_pgor7"]
 [ext_resource type="Texture2D" uid="uid://dq18apmi752so" path="res://assets/effects/frame0008.png" id="12_ak6aq"]
 [ext_resource type="Texture2D" uid="uid://dxgdondmpus3" path="res://assets/effects/frame0009.png" id="13_il00m"]
+[ext_resource type="Texture2D" uid="uid://be5fclvrknvsh" path="res://assets/effects/alerta/frame0000.png" id="19_l83rd"]
+[ext_resource type="Texture2D" uid="uid://dqilgex5h7df0" path="res://assets/effects/alerta/frame0001.png" id="20_jmxb2"]
+[ext_resource type="Texture2D" uid="uid://dwxqtseij24pi" path="res://assets/effects/alerta/frame0002.png" id="21_jrd18"]
+[ext_resource type="Texture2D" uid="uid://b30q128fe54il" path="res://assets/effects/alerta/frame0003.png" id="22_a12ed"]
+[ext_resource type="Texture2D" uid="uid://s28bgrxb7ff5" path="res://assets/effects/alerta/frame0004.png" id="23_uy2pf"]
+[ext_resource type="Texture2D" uid="uid://dxl6xygjr1fbf" path="res://assets/effects/alerta/frame0005.png" id="24_ncmtu"]
+[ext_resource type="Texture2D" uid="uid://cy24krpsf7b2i" path="res://assets/effects/alerta/frame0006.png" id="25_ihmr1"]
+[ext_resource type="Texture2D" uid="uid://c8x7flym60dw4" path="res://assets/effects/alerta/frame0007.png" id="26_cav45"]
+[ext_resource type="Texture2D" uid="uid://wofgowhc60x7" path="res://assets/effects/alerta/frame0008.png" id="27_n4hm1"]
+[ext_resource type="Texture2D" uid="uid://2uyfkhubw1cd" path="res://assets/effects/alerta/frame0009.png" id="28_bxt80"]
+[ext_resource type="Texture2D" uid="uid://syqpadki7rf2" path="res://assets/effects/alerta/frame0010.png" id="29_122hf"]
+[ext_resource type="Texture2D" uid="uid://s6cdmj71hr5o" path="res://assets/effects/alerta/frame0011.png" id="30_ngj2i"]
+[ext_resource type="Texture2D" uid="uid://dygl5a230of1h" path="res://assets/effects/alerta/frame0012.png" id="31_yo7jh"]
+[ext_resource type="Texture2D" uid="uid://cppx7cq1xgu32" path="res://assets/effects/alerta/frame0013.png" id="32_3rmto"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0qy8o"]
 texture = ExtResource("3_hrlpu")
@@ -61,7 +75,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"hit",
-"speed": 24.0
+"speed": 18.0
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qy8o"]
@@ -112,11 +126,61 @@ animations = [{
 }],
 "loop": false,
 "name": &"hit",
-"speed": 24.0
+"speed": 18.0
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_akg4l"]
 bg_color = Color(0.6901961, 0.16078432, 0.20784314, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fa6sh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_l83rd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_jmxb2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_jrd18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_a12ed")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_uy2pf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_ncmtu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_ihmr1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_cav45")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_n4hm1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_bxt80")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_122hf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_ngj2i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_yo7jh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_3rmto")
+}],
+"loop": true,
+"name": &"alerta",
+"speed": 24.0
+}]
 
 [node name="Combat" type="Control" unique_id=74895466]
 layout_mode = 3
@@ -402,6 +466,13 @@ stretch_mode = 5
 
 [node name="TirarDadoButton" type="Button" parent="Background/CenterArea/DadoPanel/VBoxContainer" unique_id=593853974]
 layout_mode = 2
+
+[node name="AlertaAnim" type="AnimatedSprite2D" parent="Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton" unique_id=337692755]
+position = Vector2(209, -23.01471)
+scale = Vector2(2.31875, 2.31875)
+sprite_frames = SubResource("SpriteFrames_fa6sh")
+animation = &"alerta"
+frame_progress = 0.6784392
 
 [node name="ResultadoLabel" type="Label" parent="Background/CenterArea/DadoPanel/VBoxContainer" unique_id=256051862]
 layout_mode = 2

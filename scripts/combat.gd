@@ -57,6 +57,9 @@ func _ready():
 
     # El botón de esquive empieza oculto
     $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton.visible = false
+    $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton/AlertaAnim.visible = false
+    var alerta = $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton/AlertaAnim
+    alerta.visible = false
     # Animacion golpe escondida
     $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim.animation_finished.connect(
     func(): $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim.visible = false)
@@ -365,6 +368,10 @@ func turno_enemigo():
     esperando_esquive = true
     $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton.visible = true
     $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton.text = "¡Esquivar!"
+    var alerta = $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton/AlertaAnim
+    alerta.visible = true
+    alerta.play("alerta") 
+
     actualizar_ui()
 
 func _on_esquivar():
@@ -373,6 +380,10 @@ func _on_esquivar():
     esperando_esquive = false
     $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton.visible = false
 
+    var alerta = $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton/AlertaAnim
+    alerta.stop()
+    alerta.visible = false
+    
     var resultado = randi() % 6 + 1
     await animar_dado(resultado)
 
