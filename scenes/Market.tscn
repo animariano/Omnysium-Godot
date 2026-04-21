@@ -32,14 +32,16 @@ label_settings = ExtResource("3_ue5tp")
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="OroLabel" type="Label" parent="Background" unique_id=705641666]
+[node name="OroLabel" type="RichTextLabel" parent="Background" unique_id=1164264653]
 layout_mode = 0
 anchor_left = 0.41958043
 anchor_top = 0.110957004
 anchor_right = 0.57498056
 anchor_bottom = 0.15950069
+bbcode_enabled = true
 text = "Oro: "
-label_settings = ExtResource("3_ue5tp")
+fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
@@ -87,13 +89,14 @@ theme_override_constants/line_spacing = 2
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ItemCosto" type="Label" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=400669299]
+[node name="ItemCosto" type="RichTextLabel" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=985075230]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-size_flags_vertical = 1
-theme_override_constants/line_spacing = 2
-horizontal_alignment = 1
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 autowrap_mode = 2
+horizontal_alignment = 1
 
 [node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=2034987617]
 layout_mode = 2
@@ -133,12 +136,14 @@ theme_override_constants/line_spacing = 2
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ItemCosto" type="Label" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=1546972734]
+[node name="ItemCosto" type="RichTextLabel" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=443821012]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-theme_override_constants/line_spacing = 2
-horizontal_alignment = 1
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 autowrap_mode = 2
+horizontal_alignment = 1
 
 [node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=1846019462]
 layout_mode = 2
@@ -178,12 +183,14 @@ theme_override_constants/line_spacing = 2
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ItemCosto" type="Label" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=402849006]
+[node name="ItemCosto" type="RichTextLabel" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=975903183]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-theme_override_constants/line_spacing = 2
-horizontal_alignment = 1
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 autowrap_mode = 2
+horizontal_alignment = 1
 
 [node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=657990383]
 layout_mode = 2

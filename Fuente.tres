@@ -1,7 +1,10 @@
 [gd_resource type="LabelSettings" format=3 uid="uid://nix8gqkv336j"]
 
+[ext_resource type="FontFile" uid="uid://b64svasx75obk" path="res://assets/ui/beleren-bold_P1.01.ttf" id="1_nikqe"]
+
 [resource]
 line_spacing = 0.0
+font = ExtResource("1_nikqe")
 font_size = 20
 outline_size = 12
 outline_color = Color(0, 0, 0, 1)

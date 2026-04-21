@@ -31,10 +31,19 @@ func crear_fila(personaje: Dictionary) -> PanelContainer:
 
 	var nombre_label = Label.new()
 	nombre_label.text = personaje.nombre
-	nombre_label.add_theme_font_size_override("font_size", 18)
+	nombre_label.add_theme_font_size_override("font_size", 24)
 
-	var stats_label = Label.new()
-	stats_label.text = "❤ %d   ⚔ %d" % [personaje.salud, personaje.ataque]
+	var stats_label = RichTextLabel.new()
+	stats_label.bbcode_enabled = true
+	stats_label.fit_content = true
+	stats_label.scroll_active = false
+	stats_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	stats_label.text = " %s %d    %s %d" % [
+		GameManager.icono("corazon"),
+		personaje.salud,
+		GameManager.icono("espada"),
+		personaje.ataque
+	]
 
 	stats_vbox.add_child(nombre_label)
 	stats_vbox.add_child(stats_label)

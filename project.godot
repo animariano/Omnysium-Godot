@@ -13,7 +13,7 @@ config_version=5
 config/name="Omnysium"
 run/main_scene="uid://uodm4gafur0d"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://d34c55mwe01gs"
 
 [autoload]
 
@@ -30,6 +30,10 @@ mouse_cursor/custom_image="uid://dxqniw7y1pdmu"
 [editor]
 
 version_control/autoload_on_startup=true
+
+[gui]
+
+theme/custom_font="uid://nix8gqkv336j"
 
 [physics]
 

@@ -21,9 +21,9 @@ script = ExtResource("1_uq28m")
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.1
-anchor_bottom = 1.0666667
+anchor_bottom = 1.067
 offset_right = -39.0
-offset_bottom = -44.00006
+offset_bottom = -44.24005
 texture = ExtResource("2_d8y2c")
 metadata/_edit_use_anchors_ = true
 

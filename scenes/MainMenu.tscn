@@ -21,6 +21,14 @@ anchor_bottom = 1.0611111
 texture = ExtResource("2_2wh52")
 metadata/_edit_use_anchors_ = true
 
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="Background" unique_id=1117684214]
+layout_mode = 0
+offset_left = 71.0
+offset_right = 111.0
+offset_bottom = 40.0
+autoplay = true
+loop = true
+
 [node name="TitleLabel" type="Label" parent="Background" unique_id=121590330]
 layout_mode = 0
 offset_right = 40.0

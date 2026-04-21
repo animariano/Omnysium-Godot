@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://daryn6lkurr0f"]
+
+[ext_resource type="FontFile" uid="uid://b64svasx75obk" path="res://assets/ui/beleren-bold_P1.01.ttf" id="1_nqjk2"]
+
+[resource]
+default_font = ExtResource("1_nqjk2")
+default_font_size = 20

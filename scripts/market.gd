@@ -27,6 +27,7 @@ var sprites_items = {
 	"idolo_abismo":       preload("res://assets/items/idolo_abismo.png"),
 	"filo_creciente":     preload("res://assets/items/filo_creciente.png"),
 	"sangre_caliente":    preload("res://assets/items/sangre_caliente.png"),
+	"daga_maldita":       preload("res://assets/items/daga_maldita.png")
 }
 
 var slots = []
@@ -45,7 +46,7 @@ func _ready():
 	cargar_items()
 
 func actualizar_oro():
-	$Background/OroLabel.text = "Oro: %d" % GameManager.heroe.oro
+	$Background/OroLabel.text = "Oro: %d %s" % [GameManager.heroe.oro,GameManager.icono("moneda")]
 
 func cargar_items():
 	for i in range(slots.size()):
@@ -60,7 +61,7 @@ func cargar_items():
 		vbox.get_node("ItemImage").texture = sprites_items[item.id]
 		vbox.get_node("ItemName").text = item.nombre
 		vbox.get_node("ItemDesc").text = item.desc
-		vbox.get_node("ItemCosto").text = "Costo: %d 🪙" % item.costo
+		vbox.get_node("ItemCosto").text = "%d %s" % [item.costo, GameManager.icono("moneda")]
 
 		var btn = vbox.get_node("ComprarButton")
 		btn.text = "Comprar"
