@@ -11,9 +11,9 @@ var icono_espada = preload("res://assets/ui/icono_espada.png")
 
 func icono(nombre: String) -> String:
 	match nombre:
-		"corazon": return "[img=20x20]res://assets/ui/icono_corazon.png[/img]"
-		"moneda":  return "[img=20x20]res://assets/ui/icono_moneda.png[/img]"
-		"espada":  return "[img=20x20]res://assets/ui/icono_espada.png[/img]"
+		"corazon": return "[img=30x30]res://assets/ui/icono_corazon.png[/img]"
+		"moneda":  return "[img=30x30]res://assets/ui/icono_moneda.png[/img]"
+		"espada":  return "[img=30x30]res://assets/ui/icono_espada.png[/img]"
 	return ""
 
 # Datos del héroe (equivalente a tu struct Heroe)
