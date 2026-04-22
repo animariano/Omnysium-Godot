@@ -114,10 +114,10 @@ var items_pool = [
 	{"id": "placas",            "nombre": "Placas",                 "desc": "Todo daño recibido se reduce en 1",                 "costo": 6,  "sprite": "placas.png"},
 	{"id": "anillo_critico",    "nombre": "Anillo Crítico",         "desc": "Si al atacar sacás 6, hacés daño doble",            "costo": 8,  "sprite": "anillo_critico.png"},
 	{"id": "amuleto_berserk",   "nombre": "Amuleto Berserk",        "desc": "Con 2 o menos de salud, +3 ataque",                 "costo": 5,  "sprite": "amuleto_berserk.png"},
-	{"id": "dados_malditos",    "nombre": "Dados Malditos",         "desc": "Acertás siempre. Si sacás 6, perdés toda la salud", "costo": 5,  "sprite": "dados_malditos.png"},
+	{"id": "dados_malditos",    "nombre": "Dados Malditos",         "desc": "Acertás siempre. (¡INESTABLES!)",                   "costo": 5,  "sprite": "dados_malditos.png"},
 	{"id": "runa_poder",        "nombre": "Runa de Poder Maldito",  "desc": "Ataque +4. Perdés 1 de salud por turno",            "costo": 5,  "sprite": "runa_poder.png"},
-	{"id": "tablilla_alma",     "nombre": "Tablilla de Alma",       "desc": "Revivís con 1 de salud al morir. Uso único",         "costo": 10, "sprite": "tablilla_alma.png"},
-	{"id": "mascara_frenetica", "nombre": "Máscara Frenética",      "desc": "Atacás dos veces por turno, pero no podés esquivar","costo": 8,  "sprite": "mascara_frenetica.png"},
+	{"id": "tablilla_alma",     "nombre": "Tablilla de Alma",       "desc": "Revivís con 1 de salud al morir. Uso único",        "costo": 10, "sprite": "tablilla_alma.png"},
+	{"id": "mascara_frenetica", "nombre": "Máscara Frenética",      "desc": "Dos acciones por turno, pero no podés esquivar",    "costo": 8,  "sprite": "mascara_frenetica.png"},
 	{"id": "corazon_cristal",   "nombre": "Corazón de Cristal",     "desc": "Salud máxima baja a 3, ataque se duplica",          "costo": 5,  "sprite": "corazon_cristal.png"},
 	{"id": "idolo_abismo",      "nombre": "Ídolo del Abismo",       "desc": "+1 ataque permanente por turno, pero perdés 1 salud","costo": 6, "sprite": "idolo_abismo.png"},
 	{"id": "filo_creciente",    "nombre": "Filo Creciente",         "desc": "Cada turno que atacás, +1 ataque acumulativo",      "costo": 7,  "sprite": "filo_creciente.png"},
@@ -145,6 +145,14 @@ var eventos_pool = [
 	{"id": "cofre",     "nombre": "Cofre del Tesoro",  "sprite": "evento_cofre.png"},
 	{"id": "fuente",    "nombre": "Fuente de Salud",   "sprite": "evento_fuente.png"},
 	{"id": "cueva",     "nombre": "Cueva Misteriosa",  "sprite": "evento_cueva.png"},
+	{"id": "estatua",   "nombre": "Estatua Maldita",      "sprite": "evento_estatua.png"},
+	{"id": "hongos",    "nombre": "Hongos Extraños",       "sprite": "evento_hongos.png"},
+	{"id": "mochila",   "nombre": "Mochila Olvidada",      "sprite": "evento_mochila.png"},
+	{"id": "vendedor",  "nombre": "Vendedor Ambulante",    "sprite": "evento_vendedor.png"},
+	{"id": "pergamino", "nombre": "Pergamino Antiguo",     "sprite": "evento_pergamino.png"},
+	{"id": "restos",    "nombre": "Restos de Aventurero",  "sprite": "evento_restos.png"},
+	{"id": "alquimista","nombre": "Alquimista",            "sprite": "evento_alquimista.png"},
+	{"id": "altar",     "nombre": "Altar Antiguo",         "sprite": "evento_altar.png"},
 ]
 
 var eventos_vistos: Array = []
