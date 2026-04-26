@@ -87,14 +87,16 @@ func crear_fila(personaje: Dictionary) -> PanelContainer:
 	panel.add_child(hbox)
 	return panel
 
-func crear_icono(ruta: String, tooltip: String) -> TextureRect:
+func crear_icono(ruta: String, descripcion: String) -> TextureRect:
 	var img = TextureRect.new()
 	img.texture = load(ruta)
 	img.custom_minimum_size = Vector2(80, 80)
 	img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	img.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	img.tooltip_text = tooltip
+	var tip = load("res://scripts/Tooltip.gd").new()
+	tip.descripcion = descripcion
+	img.add_child(tip)
 	img.mouse_filter = Control.MOUSE_FILTER_STOP
 	return img
 
@@ -108,8 +110,17 @@ func _on_elegir(personaje: Dictionary):
 		"oro": 0,
 		"habilidad_especial": personaje.habilidad_especial,
 		"habilidad_definitiva": personaje.habilidad_definitiva,
-		"escudo_fuego": false
 	}
 	GameManager.definitiva_cooldown = 0
 	GameManager.cooldown_definitiva_base = personaje.cooldown_definitiva
 	get_tree().change_scene_to_file("res://scenes/Combat.tscn")
+
+func _input(event: InputEvent):
+	if event is InputEventMouseButton and event.pressed:
+		var panel = get_tree().get_first_node_in_group("tooltip_panel")
+		if panel:
+			panel.ocultar_panel()
+	elif event is InputEventScreenTouch and event.pressed:
+		var panel = get_tree().get_first_node_in_group("tooltip_panel")
+		if panel:
+			panel.ocultar_panel()

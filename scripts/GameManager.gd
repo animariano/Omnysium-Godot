@@ -40,7 +40,7 @@ var personajes_pool = [
 	{
 		"nombre": "Mago", "clase": "Mago",
 		"salud": 6, "ataque": 1,
-		"habilidad_especial": "Bola de Fuego (Daño directo = ataque/2)",
+		"habilidad_especial": "Bola de Fuego (Mitad de daño, aplica vulnerabilidad)",
 		"habilidad_definitiva": "Escudo de Fuego (Devuelve 2 de daño)",
 		"cooldown_definitiva": 3
 	},
@@ -73,8 +73,9 @@ var habilidad_especial_usada = 0
 var definitiva_cooldown = 0
 var contador_mercado = 0
 var cooldown_definitiva_base = 3
-var especial_cooldown = 0
 var cooldown_especial_base = 2  # cada 2 combates
+
+var bloquear_accion: bool = false
 
 func reiniciar():
 	efectos_heroe = []
@@ -84,10 +85,9 @@ func reiniciar():
 	enemigo_actual_index = 0
 	habilidad_especial_usada = false
 	definitiva_cooldown = 0 
-	especial_cooldown = 0
 	contador_mercado = 0
-	heroe = {"nombre":"","clase":"","salud":0,"ataque":0,"oro":0,
-			 "habilidad_especial":"","habilidad_definitiva":"","escudo_fuego":false}
+	heroe = {"nombre":"","clase":"","salud":0,"salud_maxima":0,"ataque":0,"oro":0,
+		 "habilidad_especial":"","habilidad_definitiva":""}
 
 func enemigo_actual():
 	return enemigos[enemigo_actual_index]
@@ -111,7 +111,7 @@ var items_pool = [
 	{"id": "colmillo_vampirico","nombre": "Colmillo Vampírico",     "desc": "Te curás 1 por cada ataque exitoso",                "costo": 6,  "sprite": "colmillo_vampirico.png"},
 	{"id": "calavera_burlona",  "nombre": "Calavera Burlona",       "desc": "El enemigo recibe 1 de daño si falla",              "costo": 6,  "sprite": "calavera_burlona.png"},
 	{"id": "sanguijuela",       "nombre": "Sanguijuela",            "desc": "Al inicio del turno enemigo, él pierde 1 y vos ganás 1", "costo": 7, "sprite": "sanguijuela.png"},
-	{"id": "placas",            "nombre": "Placas",                 "desc": "Todo daño recibido se reduce en 1",                 "costo": 6,  "sprite": "placas.png"},
+	{"id": "placas",            "nombre": "Placas",                 "desc": "El daño de ataques se reduce en 1",                 "costo": 3,  "sprite": "placas.png"},
 	{"id": "anillo_critico",    "nombre": "Anillo Crítico",         "desc": "Si al atacar sacás 6, hacés daño doble",            "costo": 8,  "sprite": "anillo_critico.png"},
 	{"id": "amuleto_berserk",   "nombre": "Amuleto Berserk",        "desc": "Con 2 o menos de salud, +3 ataque",                 "costo": 5,  "sprite": "amuleto_berserk.png"},
 	{"id": "dados_malditos",    "nombre": "Dados Malditos",         "desc": "Acertás siempre. (¡INESTABLES!)",                   "costo": 5,  "sprite": "dados_malditos.png"},
@@ -201,3 +201,4 @@ func get_valor_efecto(objetivo: String, id: String) -> int:
 		if e.id == id:
 			return e.valor
 	return 0
+   

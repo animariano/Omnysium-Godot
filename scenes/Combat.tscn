@@ -32,6 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://s6cdmj71hr5o" path="res://assets/effects/alerta/frame0011.png" id="30_ngj2i"]
 [ext_resource type="Texture2D" uid="uid://dygl5a230of1h" path="res://assets/effects/alerta/frame0012.png" id="31_yo7jh"]
 [ext_resource type="Texture2D" uid="uid://cppx7cq1xgu32" path="res://assets/effects/alerta/frame0013.png" id="32_3rmto"]
+[ext_resource type="PackedScene" uid="uid://bvw12sy1rmwy6" path="res://scenes/TooltipPanel.tscn" id="33_jmxb2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0qy8o"]
 texture = ExtResource("3_hrlpu")
@@ -490,3 +491,7 @@ frame_progress = 0.5546814
 layout_mode = 2
 size_flags_horizontal = 5
 horizontal_alignment = 1
+
+[node name="TooltipPanel" parent="." unique_id=840286959 instance=ExtResource("33_jmxb2")]
+layout_mode = 0
+anchors_preset = 0

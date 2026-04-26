@@ -17,6 +17,7 @@ var sangre_caliente_activa = false
 var filo_creciente_bonus = 0
 var idolo_ataque_bonus = 0
 var tiene_dados_malditos = false
+var amuleto_berserk_activo: bool = false
 
 var sprites_enemigos = {
     "Goblin":          preload("res://assets/enemies/goblin.png"),
@@ -46,7 +47,6 @@ var texturas_dado = [
 ]
 
 func _ready():
-    print("Efectos heroe al iniciar combate: ", GameManager.efectos_heroe)
     
     # Conectar botones — ajustá las rutas a tu jerarquía real
     $Background/ActionButtons/AtacarButton.pressed.connect(_on_atacar)
@@ -91,6 +91,12 @@ func _ready():
 func actualizar_ui():
     var h = GameManager.heroe
     var enemigo = GameManager.enemigo_actual()
+    
+    # Revertir amuleto si salud sube sobre 2
+    if GameManager.items_comprados.has("amuleto_berserk") and amuleto_berserk_activo and GameManager.heroe.salud > 2:
+        GameManager.heroe.ataque -= 3
+        amuleto_berserk_activo = false
+        log_combate("[color=gray]Amuleto Berserk desactivado.[/color]")
 
     $Background/HeroePanel/VBoxContainer/HeroeImage.texture = sprites_heroes[h.clase]
     $Background/HeroePanel/VBoxContainer/HeroeNameLabel.text = h.nombre
@@ -100,17 +106,16 @@ func actualizar_ui():
         GameManager.icono("moneda"),
         h.oro
     ]	
+    #panel heroe
     $Background/HeroePanel/VBoxContainer/BarraSaludHeroe.max_value = h.salud_maxima
-    #$Background/HeroePanel/VBoxContainer/BarraSaludHeroe.value = h.salud   probando
     $Background/HeroePanel/VBoxContainer/BarraSaludHeroe.set_target(h.salud)
     $Background/HeroePanel/VBoxContainer/SaludLabel.text = "%d/%d" % [h.salud, h.salud_maxima]
-
+    #panel enemigo
     $Background/EnemigoPanel/VBoxContainer/EnemigoImage.texture = sprites_enemigos[enemigo.nombre]
     $Background/EnemigoPanel/VBoxContainer/EnemigoNameLabel.text = enemigo.nombre
     $Background/EnemigoPanel/VBoxContainer/EnemigoStatsLabel.text = "%s %d" % [GameManager.icono("espada"), ataque_enemigo]
     $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.max_value = enemigo.salud  # salud inicial
     $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.max_value = salud_maxima_enemigo
-    #$Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.value = salud_enemigo probando
     $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.set_target(salud_enemigo)
     $Background/EnemigoPanel/VBoxContainer/SaludLabel.text = "%d/%d" % [salud_enemigo, salud_maxima_enemigo]
 
@@ -133,7 +138,7 @@ func animar_dado(resultado: int):
     for i in range(12):
         var cara_random = randi() % 6
         $Background/CenterArea/DadoPanel/VBoxContainer/DadoTexture.texture = texturas_dado[cara_random]
-        await get_tree().create_timer(0.05).timeout
+        await get_tree().create_timer(0.03).timeout
     # Muestra el resultado final
     mostrar_dado(resultado)
 
@@ -147,8 +152,9 @@ func _on_atacar():
     var ataque_efectivo = h.ataque
 
     # Amuleto Berserk
-    if GameManager.items_comprados.has("amuleto_berserk") and h.salud <= 2:
-        ataque_efectivo += 3
+    if GameManager.items_comprados.has("amuleto_berserk") and h.salud <= 2 and not amuleto_berserk_activo:
+        GameManager.heroe.ataque += 3
+        amuleto_berserk_activo = true
         log_combate("[color=red]¡Amuleto Berserk activado! +3 ataque.[/color]")
 
     # Filo Creciente
@@ -183,8 +189,8 @@ func _on_atacar():
         await get_tree().create_timer(0.8).timeout
 
         if GameManager.heroe.salud <= 0:
-            await get_tree().create_timer(1.0).timeout
-            get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+            await get_tree().create_timer(3.0).timeout
+            await game_over()
             return
 
         var dado_acierto = tirar_dado()
@@ -210,8 +216,8 @@ func _on_atacar():
             await animar_dado(resultado)
 
             if GameManager.heroe.salud <= 0:
-                await get_tree().create_timer(1.0).timeout
-                get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+                await get_tree().create_timer(3.0).timeout
+                await game_over()
                 return
 
             var umbral_ataque = 4 if GameManager.items_comprados.has("guantes_precision") else 3
@@ -239,10 +245,10 @@ func _on_atacar():
                 if GameManager.items_comprados.has("sangre_caliente"):
                     sangre_caliente_activa = true
 
-            await get_tree().create_timer(0.5).timeout
+            #await get_tree().create_timer(0.5).timeout
 
     actualizar_ui()
-    await get_tree().create_timer(0.8).timeout
+    #await get_tree().create_timer(0.8).timeout
     if salud_enemigo <= 0:
         chequear_muerte_enemigo()
     else:
@@ -263,6 +269,7 @@ func _on_especial():
         "Mago":
             var dano = max(1, h.ataque / 2)
             salud_enemigo -= dano
+            GameManager.aplicar_efecto("enemigo", "vulnerabilidad", 3, 1)
             animar_golpe("enemigo")
             log_combate("[color=cyan]Bola de Fuego! Hiciste %d de daño directo.[/color]" % dano)
         "Berserker":
@@ -285,10 +292,8 @@ func _on_definitiva():
     GameManager.definitiva_cooldown = GameManager.cooldown_definitiva_base # disponible cada 3 combates
     turno_jugador = false
     var h = GameManager.heroe
-
-    # Efecto visual inmediato
+    # Efecto visual para que se ponga gris la skill
     $Background/ActionButtons/DefinitivaButton.modulate = Color(0.3, 0.3, 0.3)
-    $Background/ActionButtons/DefinitivaButton.tooltip_text = h.habilidad_definitiva + "\n⏳ Disponible en 3 combates"
 
     match h.clase:
         "Paladin":
@@ -297,7 +302,7 @@ func _on_definitiva():
             GameManager.heroe.salud = min(h.salud + h.ataque, h.salud_maxima)
             log_combate("[color=yellow]Golpe Sanador! Daño: %d. Tu salud: %d[/color]" % [h.ataque, GameManager.heroe.salud])
         "Mago":
-            GameManager.heroe.escudo_fuego = true
+            GameManager.aplicar_efecto("heroe", "escudo_fuego", 9999, 2)  # 9999 = dura toda la partida, valor 2 = daño devuelto
             log_combate("[color=yellow]Escudo de Fuego activado![/color]")
         "Berserker":
             var dano = h.ataque * 3
@@ -307,7 +312,7 @@ func _on_definitiva():
             log_combate("[color=yellow]Arremetida Suicida! Daño: %d. Quedás a 1 de salud.[/color]" % dano)
 
     actualizar_ui()
-    await get_tree().create_timer(0.8).timeout
+    await get_tree().create_timer(0.3).timeout
     if salud_enemigo <= 0:
         chequear_muerte_enemigo()
     else:
@@ -318,7 +323,7 @@ func _on_definitiva():
 func turno_enemigo():
     turno_jugador = false
     actualizar_ui()
-    await get_tree().create_timer(0.8).timeout
+    #await get_tree().create_timer(0.8).timeout
 
     # Sanguijuela — inicio turno enemigo
     if GameManager.items_comprados.has("sanguijuela"):
@@ -375,7 +380,7 @@ func turno_enemigo():
         actualizar_ui()
         await get_tree().create_timer(0.5).timeout
         if GameManager.heroe.salud <= 0:
-            get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+            await game_over()
             return
         if salud_enemigo <= 0:
             chequear_muerte_enemigo()
@@ -422,9 +427,9 @@ func _on_esquivar():
     await get_tree().create_timer(0.5).timeout
 
     if GameManager.heroe.salud <= 0:
-        log_combate("[color=red][b]¡Has muerto![/b][/color]")
+        #log_combate("[color=red][b]¡Has muerto![/b][/color]")
         await get_tree().create_timer(1.5).timeout
-        get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+        await game_over()
         return
 
     if salud_enemigo <= 0:
@@ -457,10 +462,11 @@ func aplicar_dano_entrante():
     log_combate("[color=red]Recibiste %d de daño. Tu salud: %d[/color]" % [dano_final, GameManager.heroe.salud])
 
     # Escudo de Fuego
-    if GameManager.heroe.escudo_fuego:
-        animar_golpe("enemigo") 
-        salud_enemigo -= 2
-        log_combate("[color=cyan]Escudo de Fuego devolvió 2 de daño![/color]")
+    if GameManager.tiene_efecto("heroe", "escudo_fuego"):
+        var dano_devuelto = GameManager.get_valor_efecto("heroe", "escudo_fuego")
+        animar_golpe("enemigo")
+        salud_enemigo -= dano_devuelto
+        log_combate("[color=cyan]Escudo de Fuego devolvió %d de daño![/color]" % dano_devuelto)
 
     # Tablilla de Alma — reivís con 1 si morís
     if GameManager.heroe.salud <= 0 and GameManager.items_comprados.has("tablilla_alma"):
@@ -474,9 +480,12 @@ func iniciar_turno_jugador():
     if especial_cooldown_turnos > 0:
         especial_cooldown_turnos -= 1
 
-    if especial_cooldown_turnos == 0:
+    if especial_cooldown_turnos > 0:
+        $Background/ActionButtons/EspecialButton.modulate = Color(0.3, 0.3, 0.3)
+    else:
         $Background/ActionButtons/EspecialButton.modulate = Color(1, 1, 1)
-
+        
+    configurar_botones_accion() #actualiza cd en los tooltip
     turno_jugador = true
     # Aturdido — pierde el turno
     if GameManager.tiene_efecto("heroe", "aturdido"):
@@ -503,7 +512,7 @@ func iniciar_turno_jugador():
         log_combate("[color=orange]Ídolo del Abismo: +1 ataque, -1 salud.[/color]")
         if GameManager.heroe.salud <= 0:
             await get_tree().create_timer(1.5).timeout
-            get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+            await game_over()
             return
 
     # Runa de Poder Maldito
@@ -513,7 +522,7 @@ func iniciar_turno_jugador():
         log_combate("[color=red]Runa de Poder: -1 salud.[/color]")
         if GameManager.heroe.salud <= 0:
             await get_tree().create_timer(1.5).timeout
-            get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+            await game_over()
             return
 
     #turno_jugador = true
@@ -568,7 +577,10 @@ func cargar_inventario():
         img.custom_minimum_size = Vector2(60, 60)
         img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
         img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-        img.tooltip_text = item_data[0].nombre + "\n" + item_data[0].desc
+        var tip = load("res://scripts/Tooltip.gd").new()
+        tip.descripcion = item_data[0].nombre + "\n" + item_data[0].desc
+        img.add_child(tip)
+        img.mouse_filter = Control.MOUSE_FILTER_STOP
         grid.add_child(img)
         
 func tirar_dado() -> int:
@@ -578,6 +590,8 @@ func tirar_dado() -> int:
         if resultado == 6:
             log_combate("[color=red]¡Los Dados Malditos sacaron 6! Se destruyen y te dejan gravemente herido.[/color]")
             GameManager.heroe.salud = 1
+            GameManager.items_comprados.erase("dados_malditos")
+            cargar_inventario()  # actualizar el inventario
             actualizar_ui()
         return resultado
     return randi() % 6 + 1
@@ -592,24 +606,21 @@ func configurar_botones_accion():
     btn_especial.texture_normal  = load("res://assets/skills/especial_%s.png" % h.clase.to_lower())
     btn_definitiva.texture_normal = load("res://assets/skills/definitiva_%s.png" % h.clase.to_lower())
 
-    btn_atacar.tooltip_text    = "Atacar\nTirás el dado. 1-3 acierta."
-    btn_especial.tooltip_text  = h.habilidad_especial
-    
-    # Tooltip muestra si algun skill esta en cd
-    if GameManager.definitiva_cooldown > 0:
-        btn_definitiva.tooltip_text = h.habilidad_definitiva + "\n⏳ Disponible en %d combate/s" % GameManager.definitiva_cooldown
-        btn_definitiva.modulate = Color(0.3, 0.3, 0.3)  # gris oscuro
-    else:
-        btn_definitiva.tooltip_text = h.habilidad_definitiva + "\n(Cooldown: 3 combates)"
-        btn_definitiva.modulate = Color(1, 1, 1)  # color normal
-        
-    if GameManager.especial_cooldown > 0:
-        btn_especial.tooltip_text = h.habilidad_especial + "\n⏳ Disponible en %d turnos/s" % GameManager.especial_cooldown
-        btn_especial.modulate = Color(0.3, 0.3, 0.3)
-    else:
-        btn_especial.tooltip_text = h.habilidad_especial + "\n(Cooldown: %d turno/s)" % GameManager.cooldown_especial_base
-        btn_especial.modulate = Color(1, 1, 1)    
+    agregar_tooltip(btn_atacar, "Atacar\nTirás el dado. 1-3 acierta.")
 
+    if especial_cooldown_turnos > 0:  # ← variable local de Combat.gd
+        btn_especial.modulate = Color(0.3, 0.3, 0.3)
+        agregar_tooltip(btn_especial, h.habilidad_especial + "\n⏳ Disponible en %d turno/s" % especial_cooldown_turnos)
+    else:
+        btn_especial.modulate = Color(1, 1, 1)
+        agregar_tooltip(btn_especial, h.habilidad_especial)
+
+    if GameManager.definitiva_cooldown > 0:
+        btn_definitiva.modulate = Color(0.3, 0.3, 0.3)
+        agregar_tooltip(btn_definitiva, h.habilidad_definitiva + "\n⏳ Disponible en %d combate/s" % GameManager.definitiva_cooldown)
+    else:
+        btn_definitiva.modulate = Color(1, 1, 1)
+        agregar_tooltip(btn_definitiva, h.habilidad_definitiva + "\n(Cooldown: %d combates)" % GameManager.cooldown_definitiva_base)
 
 func procesar_efectos_heroe():
     var h = GameManager.heroe
@@ -629,7 +640,7 @@ func procesar_efectos_heroe():
             else:
                 actualizar_ui()
                 await get_tree().create_timer(1.0).timeout
-                get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+                await game_over()
                 return
 
     # Regeneración
@@ -671,6 +682,7 @@ var sprites_efectos = {
     "debilidad":      preload("res://assets/effects/efecto_debilidad.png"),
     "regeneracion":   preload("res://assets/effects/efecto_regeneracion.png"),
     "aturdido":       preload("res://assets/effects/efecto_aturdido.png"),
+    "escudo_fuego":   preload("res://assets/effects/efecto_escudo_fuego.png"),
 }
 
 func actualizar_efectos_ui():
@@ -682,6 +694,15 @@ func actualizar_efectos_ui():
         $Background/EnemigoPanel/VBoxContainer/EnemigoEfectosContainer,
         GameManager.efectos_enemigo
     )
+var descripciones_efectos = {
+    "veneno":         "Recibís daño por turno.",
+    "vulnerabilidad": "Recibís 50% más de daño.",
+    "debilidad":      "Tu ataque se reduce 50%.",
+    "regeneracion":   "Te curás salud por turno.",
+    "aturdido":       "Perdés tu turno.",
+    "escudo_fuego":   "Devolvés daño al recibir ataques.",
+}
+
 
 func _actualizar_efectos_container(container: HBoxContainer, efectos: Array):
     for child in container.get_children():
@@ -693,7 +714,15 @@ func _actualizar_efectos_container(container: HBoxContainer, efectos: Array):
         img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
         img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
         img.mouse_filter = Control.MOUSE_FILTER_STOP
-        img.tooltip_text = "%s (%d turnos)" % [efecto.id.capitalize(), efecto.duracion]
+
+        # Tooltip con nombre, descripción y turnos
+        var desc = descripciones_efectos.get(efecto.id, "")
+        var texto_tooltip = "%s\n%s\nTurnos restantes: %d" % [efecto.id.capitalize(), desc, efecto.duracion]
+        
+        var tip = load("res://scripts/Tooltip.gd").new()
+        tip.descripcion = texto_tooltip
+        img.add_child(tip)
+        
         container.add_child(img)
         
 func gastar_accion():
@@ -718,3 +747,20 @@ func animar_golpe(objetivo: String):
         var anim = $Background/EnemigoPanel/VBoxContainer/EnemigoImage/EnemigoHitAnim
         anim.visible = true
         anim.play("hit")
+
+func agregar_tooltip(nodo: Control, texto: String):
+    # Eliminar tooltip existente si hay uno
+    for hijo in nodo.get_children():
+        if hijo.get_script() and hijo.get_script().resource_path == "res://scripts/Tooltip.gd":
+            hijo.queue_free()
+    var tip = load("res://scripts/Tooltip.gd").new()
+    tip.descripcion = texto
+    nodo.add_child(tip)
+    
+func game_over():
+    log_combate("[color=red][b]¡HAS MUERTO![/b][/color]")
+    $Background/ActionButtons/AtacarButton.disabled = true
+    $Background/ActionButtons/EspecialButton.disabled = true
+    $Background/ActionButtons/DefinitivaButton.disabled = true
+    await get_tree().create_timer(3.0).timeout  # ← 3 segundos para leer qué pasó
+    get_tree().change_scene_to_file("res://scenes/GameOver.tscn")

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bvw12sy1rmwy6"]
+
+[ext_resource type="Script" uid="uid://dwugog7qjn7tl" path="res://scripts/TooltipPanel.gd" id="1_rrjtx"]
+
+[node name="TooltipPanel" type="PanelContainer" unique_id=840286959]
+visible = false
+z_index = 100
+anchors_preset = -1
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rrjtx")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=510249742]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TooltipLabel" type="RichTextLabel" parent="MarginContainer" unique_id=1897589539]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
