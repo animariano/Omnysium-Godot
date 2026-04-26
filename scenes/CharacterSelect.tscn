@@ -21,10 +21,10 @@ script = ExtResource("1_uq28m")
 [node name="Background" type="TextureRect" parent="." unique_id=1768382197]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.1
-anchor_bottom = 1.067
-offset_right = -39.0
-offset_bottom = -44.24005
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 89.0
+offset_bottom = 4.0
 texture = ExtResource("2_d8y2c")
 metadata/_edit_use_anchors_ = true
 

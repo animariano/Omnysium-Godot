@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://n8xo11f34wa2" path="res://scripts/MainMenu.gd" id="1_yqorp"]
 [ext_resource type="Texture2D" uid="uid://c8iro48gmeken" path="res://assets/MenuBackground.png" id="2_2wh52"]
 [ext_resource type="Texture2D" uid="uid://bjrao1ku8k8bv" path="res://assets/Logo.png" id="3_ow34m"]
+[ext_resource type="Theme" uid="uid://de2a7eiad50ay" path="res://assets/ui/panel.tres" id="4_ow34m"]
 
 [node name="MainMenu" type="Control" unique_id=1288377322]
 layout_mode = 3
@@ -53,6 +54,7 @@ anchor_top = 0.34685865
 anchor_right = 0.57123
 anchor_bottom = 0.41230366
 offset_right = 6.1035156e-05
+theme = ExtResource("4_ow34m")
 text = "Jugar"
 metadata/_edit_use_anchors_ = true
 
@@ -64,5 +66,6 @@ anchor_top = 0.42931938
 anchor_right = 0.5719249
 anchor_bottom = 0.4947644
 offset_right = 6.1035156e-05
+theme = ExtResource("4_ow34m")
 text = "Salir"
 metadata/_edit_use_anchors_ = true

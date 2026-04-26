@@ -1,7 +1,7 @@
 extends Node
 
 func _ready():
-	var tema = load("res://assets/ui/tema.tres")
+	var tema = load("res://assets/ui/panel.tres")
 	get_tree().root.theme = tema
 
 # Iconos UI globales

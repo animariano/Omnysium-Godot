@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cf32w83wabpd8" path="res://scripts/market.gd" id="1_byv1b"]
 [ext_resource type="Texture2D" uid="uid://b6bo1bl4kgqw" path="res://assets/MarketBackground.png" id="2_0lfoy"]
 [ext_resource type="LabelSettings" uid="uid://nix8gqkv336j" path="res://Fuente.tres" id="3_ue5tp"]
+[ext_resource type="Theme" uid="uid://de2a7eiad50ay" path="res://assets/ui/panel.tres" id="4_ue5tp"]
 
 [node name="Market" type="Control" unique_id=933650696]
 layout_mode = 3
@@ -100,6 +101,7 @@ horizontal_alignment = 1
 
 [node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot1/VBoxContainer" unique_id=2034987617]
 layout_mode = 2
+theme = ExtResource("4_ue5tp")
 
 [node name="ItemSlot2" type="Panel" parent="Background/ItemsContainer" unique_id=729549316]
 layout_mode = 2
@@ -147,6 +149,7 @@ horizontal_alignment = 1
 
 [node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot2/VBoxContainer" unique_id=1846019462]
 layout_mode = 2
+theme = ExtResource("4_ue5tp")
 
 [node name="ItemSlot3" type="Panel" parent="Background/ItemsContainer" unique_id=231508499]
 layout_mode = 2
@@ -194,6 +197,7 @@ horizontal_alignment = 1
 
 [node name="ComprarButton" type="Button" parent="Background/ItemsContainer/ItemSlot3/VBoxContainer" unique_id=657990383]
 layout_mode = 2
+theme = ExtResource("4_ue5tp")
 
 [node name="SalirButton" type="Button" parent="Background" unique_id=1673361100]
 layout_mode = 0
@@ -201,5 +205,6 @@ anchor_left = 0.3807304
 anchor_top = 0.8599168
 anchor_right = 0.6138306
 anchor_bottom = 0.94313455
+theme = ExtResource("4_ue5tp")
 text = "Salir"
 metadata/_edit_use_anchors_ = true

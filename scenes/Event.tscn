@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dpjrwus0mjlkq" path="res://scripts/Event.gd" id="1_46xpc"]
 [ext_resource type="Texture2D" uid="uid://cod0saie75uso" path="res://assets/EventBackground.png" id="2_hjsmv"]
 [ext_resource type="LabelSettings" uid="uid://nix8gqkv336j" path="res://Fuente.tres" id="3_cejff"]
+[ext_resource type="Theme" uid="uid://de2a7eiad50ay" path="res://assets/ui/panel.tres" id="4_hjsmv"]
 
 [node name="Event" type="Control" unique_id=624697834]
 layout_mode = 3
@@ -91,5 +92,6 @@ anchor_left = 0.34801137
 anchor_top = 0.8203125
 anchor_right = 0.56107956
 anchor_bottom = 0.8984375
+theme = ExtResource("4_hjsmv")
 text = "Continuar"
 metadata/_edit_use_anchors_ = true
