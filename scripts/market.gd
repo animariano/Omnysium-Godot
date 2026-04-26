@@ -33,6 +33,10 @@ var sprites_items = {
 var slots = []
 
 func _ready():
+	AudioManager.reproducir("mercado_entrar",-5.0)
+	AudioManager.reproducir_musica("ciudad")
+
+	
 	$Background/SalirButton.pressed.connect(_on_salir)
 	
 	slots = [
@@ -69,6 +73,7 @@ func cargar_items():
 		btn.pressed.connect(_on_comprar.bind(i))
 
 func _on_comprar(indice: int):
+	AudioManager.reproducir("item")
 	var item = items_ofrecidos[indice]
 	if GameManager.heroe.oro < item.costo:
 		return
@@ -76,6 +81,7 @@ func _on_comprar(indice: int):
 	GameManager.heroe.oro -= item.costo
 	GameManager.comprar_item(item.id)
 	aplicar_efecto(item.id)
+	AudioManager.reproducir("oro")
 	actualizar_oro()
 
 	# Deshabilitar el botón y marcar como comprado

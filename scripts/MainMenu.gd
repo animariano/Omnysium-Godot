@@ -1,6 +1,7 @@
 extends Control
 
 func _ready():
+	AudioManager.reproducir_musica("menu")
 	$Background/PlayButton.pressed.connect(_on_play_pressed)
 	$Background/QuitButton.pressed.connect(_on_quit_pressed)
 

@@ -1,6 +1,7 @@
 extends Control
 
 func _ready():
+	AudioManager.reproducir_musica("character_select", -20.0)
 	var vbox = $Background/ScrollContainer/VBoxContainer
 	for personaje in GameManager.personajes_pool:
 		var fila = crear_fila(personaje)

@@ -48,7 +48,7 @@ func _ready():
 
 func cargar_evento(id: String):
 	match id:
-		"trampa":    cargar_trampa()
+		"trampa":    cargar_trampa() 
 		"equipo":    cargar_equipo()
 		"cofre":     cargar_cofre()
 		"fuente":    cargar_fuente()
@@ -97,6 +97,7 @@ func terminar_evento():
 
 # ─── TRAMPA ──────────────────────────────────────────────────────
 func cargar_trampa():
+	AudioManager.reproducir_musica("lugar_siniestro")
 	log_evento("Te encontrás con una trampa oculta!")
 	log_evento("Tirá el dado para esquivarla. Necesitás sacar 4 o menos.")
 	agregar_boton("Tirar dado", _on_trampa_dado)
@@ -119,6 +120,7 @@ func _on_trampa_dado():
 
 # ─── EQUIPO ───────────────────────────────────────────────────────
 func cargar_equipo():
+	AudioManager.reproducir_musica("bosque")
 	log_evento("Encontraste equipo abandonado en el camino!")
 	log_evento("Ganás +1 %s." % [GameManager.icono("espada")])
 	log_evento("Ganás +1 %s max." % [GameManager.icono("corazon")])
@@ -128,7 +130,8 @@ func cargar_equipo():
 
 # ─── COFRE ────────────────────────────────────────────────────────
 func cargar_cofre():
-	log_evento("Descubriste un cofre escondido lleno de oro!")
+	AudioManager.reproducir_musica("bosque")
+	log_evento("Descubriste un cofre oculto!")
 	var resultado = randi() % 6 + 1
 	GameManager.heroe.oro += resultado
 	resultado = resultado+3
@@ -137,14 +140,17 @@ func cargar_cofre():
 
 # ─── FUENTE ───────────────────────────────────────────────────────
 func cargar_fuente():
+	AudioManager.reproducir_musica("bosque")
 	log_evento("Descubriste una fuente con poderes curativos!")
 	#GameManager.heroe.salud = min(GameManager.heroe.salud * 2, GameManager.heroe.salud_maxima)
 	GameManager.heroe.salud = GameManager.heroe.salud_maxima
+	AudioManager.reproducir("curacion")
 	log_evento("[color=green]Restauras completamente tu salud. Salud: %d[/color]" % GameManager.heroe.salud)
 	terminar_evento()
 
 # ─── CUEVA MISTERIOSA ─────────────────────────────────────────────
 func cargar_cueva():
+	AudioManager.reproducir_musica("cueva")
 	log_evento("Entrás a una cueva misteriosa. Tres caminos te esperan:")
 	agregar_boton("Sendero oscuro (riesgo/recompensa)", _on_cueva_oscuro)
 	agregar_boton("Pasillo dorado (cofre de oro)", _on_cueva_dorado)
@@ -190,6 +196,7 @@ func _on_cueva_oscuro_dado():
 			agregar_boton("Dejarlo", _on_cueva_dejar_cuchillo))
 
 func _on_cueva_tomar_cuchillo():
+	AudioManager.reproducir("debuff2")
 	GameManager.heroe.salud_maxima += 2
 	GameManager.heroe.ataque += 2
 	$Background/EventLog.clear() 
@@ -206,18 +213,21 @@ func _on_cueva_dorado():
 	limpiar_opciones()
 	$Background/EventLog.clear()
 	$Background/EventImage.texture = load("res://assets/events/evento_cofre.png")
+	AudioManager.reproducir("oro")
 	log_evento("[color=yellow]Seguís la luz dorada y encontrás un cofre. Ganás 5 %s![/color]"%[GameManager.icono("moneda")])
 	GameManager.heroe.oro += 5
 	terminar_evento()
 
 func _on_cueva_vegetal():
 	limpiar_opciones()
+	AudioManager.reproducir("curacion")
 	log_evento("[color=green]El túnel te lleva a una planta curativa. Recuperás 4 de salud.[/color]")
 	GameManager.heroe.salud = min(GameManager.heroe.salud + 4, GameManager.heroe.salud_maxima)
 	terminar_evento()
 	
 # ─── ESTATUA MALDITA ─────────────────────────────────────────────
 func cargar_estatua():
+	AudioManager.reproducir_musica("lugar_siniestro")
 	log_evento("Ante vos se alza una estatua con una expresión perturbadora.")
 	log_evento("Algo en ella te invita a rezar... o a ignorarla.")
 	agregar_boton("Rezar", _on_estatua_rezar)
@@ -232,6 +242,7 @@ func _on_estatua_rezar():
 		await animar_dado(resultado)
 		if resultado >= 4:
 			GameManager.heroe.salud -= 2
+			AudioManager.reproducir("debuff")
 			log_evento("[color=red]La estatua cobra su precio. Perdés 2 de salud. Salud: %d[/color]" % GameManager.heroe.salud)
 			if GameManager.heroe.salud <= 0:
 				await get_tree().create_timer(1.0).timeout
@@ -239,6 +250,7 @@ func _on_estatua_rezar():
 				return
 		else:
 			GameManager.heroe.oro += 2
+			AudioManager.reproducir("oro")
 			log_evento("[color=yellow]La estatua te bendice. Ganás 2 %s. Oro: %d[/color]" % [GameManager.icono("moneda"), GameManager.heroe.oro])
 		terminar_evento()
 	)
@@ -249,6 +261,7 @@ func _on_estatua_ignorar():
 
 # ─── HONGOS EXTRAÑOS ─────────────────────────────────────────────
 func cargar_hongos():
+	AudioManager.reproducir_musica("bosque")
 	log_evento("Encontrás unos hongos de colores llamativos. Podrían ser comestibles... o no.")
 	agregar_boton("Comer", _on_hongos_comer)
 	agregar_boton("No comer", _on_hongos_no_comer)
@@ -261,6 +274,7 @@ func _on_hongos_comer():
 		var resultado = randi() % 6 + 1
 		await animar_dado(resultado)
 		if resultado >= 4:
+			AudioManager.reproducir("debuff")
 			GameManager.aplicar_efecto("heroe", "veneno", 3, 1)
 			log_evento("[color=red]¡Los hongos eran venenosos! Quedás envenenado por 3 turnos.[/color]")
 		else:
@@ -276,6 +290,7 @@ func _on_hongos_no_comer():
 
 # ─── MOCHILA OLVIDADA ────────────────────────────────────────────
 func cargar_mochila():
+	AudioManager.reproducir_musica("bosque")
 	log_evento("Encontrás una mochila abandonada al costado del camino.")
 	agregar_boton("Revisar", _on_mochila_revisar)
 	agregar_boton("Ignorar", _on_mochila_ignorar)
@@ -295,6 +310,7 @@ func _on_mochila_revisar():
 	GameManager.comprar_item(item.id)
 	# Aplicar efecto si tiene efecto inmediato
 	_aplicar_efecto_item(item.id)
+	AudioManager.reproducir("item")
 	log_evento("[color=cyan]Encontrás: [b]%s[/b]. %s[/color]" % [item.nombre, item.desc])
 	terminar_evento()
 
@@ -329,6 +345,7 @@ func _aplicar_efecto_item(item_id: String):
 
 # ─── VENDEDOR AMBULANTE ──────────────────────────────────────────
 func cargar_vendedor():
+	AudioManager.reproducir_musica("ciudad")
 	log_evento("Un vendedor ambulante con una capa raída te ofrece sus mercancías.")
 	agregar_boton("Comprar", _on_vendedor_comprar)
 	agregar_boton("Robar", _on_vendedor_robar)
@@ -343,6 +360,7 @@ func _on_vendedor_robar():
 	limpiar_opciones()
 	log_evento("Aprovechás un descuido y le robás la bolsa.")
 	GameManager.heroe.oro += 5
+	AudioManager.reproducir("oro")
 	log_evento("[color=yellow]Obtienes 5 %s." % [GameManager.icono("moneda"),])
 	terminar_evento()
 
@@ -359,6 +377,7 @@ func _on_pergamino_dado():
 		GameManager.heroe.salud_maxima += 1
 		GameManager.heroe.salud += 1
 		GameManager.heroe.ataque += 1
+		AudioManager.reproducir("runa")
 		log_evento("[color=green]Las runas te empoderan! Salud máxima +1, Ataque +1.[/color]")
 	else:
 		log_evento("[color=gray]Las runas se desvanecen sin efecto. No pasa nada.[/color]")
@@ -366,6 +385,7 @@ func _on_pergamino_dado():
 
 # ─── RESTOS DE AVENTURERO ────────────────────────────────────────
 func cargar_restos():
+	AudioManager.reproducir_musica("lugar_siniestro")
 	log_evento("Encontrás los restos de un aventurero caído. Su bolsa aún tiene algo dentro.")
 	log_evento("[color=red]Advertencia: registrar los restos podría ser peligroso.[/color]")
 	agregar_boton("Registrar restos", _on_restos_registrar)
@@ -376,6 +396,7 @@ func _on_restos_registrar():
 	var oro_encontrado = randi() % 4 + 1  # 1 a 4 de oro
 	GameManager.heroe.oro += oro_encontrado
 	GameManager.aplicar_efecto("heroe", "veneno", 3, 1)
+	AudioManager.reproducir("debuff")
 	log_evento("[color=yellow]Encontrás %d %s en la bolsa.[/color]" % [oro_encontrado, GameManager.icono("moneda")])
 	log_evento("[color=red]Pero algo te infecta. Quedás envenenado por 3 turnos.[/color]")
 	terminar_evento()
@@ -386,6 +407,7 @@ func _on_restos_ignorar():
 
 # ─── ALQUIMISTA ──────────────────────────────────────────────────
 func cargar_alquimista():
+	AudioManager.reproducir_musica("ciudad")
 	log_evento("Un alquimista excéntrico te ofrece una pócima de aspecto dudoso.")
 	log_evento("'¡Solo 50% de chances de morir!' — dice con una sonrisa.")
 	agregar_boton("Tomar pócima", _on_alquimista_tomar)
@@ -395,15 +417,18 @@ func _on_alquimista_tomar():
 	limpiar_opciones()
 	log_evento("Tomás la pócima de un sorbo...")
 	agregar_boton("Tirar dado", func():
+		await AudioManager.reproducir("pocion")
 		limpiar_opciones()
 		var resultado = randi() % 6 + 1
 		await animar_dado(resultado)
 		if resultado >= 4:
 			GameManager.aplicar_efecto("heroe", "veneno", 3, 1)
+			AudioManager.reproducir("debuff")
 			log_evento("[color=red]La pócima era tóxica! Quedás envenenado por 3 turnos.[/color]")
 		else:
 			GameManager.heroe.salud_maxima += 2
 			GameManager.heroe.salud += 2
+			AudioManager.reproducir("runa")
 			log_evento("[color=green]La pócima funciona! Salud máxima +2. Salud: %d/%d[/color]" % [GameManager.heroe.salud, GameManager.heroe.salud_maxima])
 		terminar_evento()
 	)
@@ -414,6 +439,7 @@ func _on_alquimista_rechazar():
 
 # ─── ALTAR ANTIGUO ───────────────────────────────────────────────
 func cargar_altar():
+	AudioManager.reproducir_musica("lugar_siniestro")
 	log_evento("Encontrás un altar de piedra cubierto de símbolos. Emana un poder oscuro.")
 	log_evento("Podés sacrificar salud para obtener más poder. Se puede usar varias veces.")
 	_mostrar_opciones_altar()
@@ -436,6 +462,8 @@ func _on_altar_sacrificar():
 		return
 	GameManager.heroe.salud -= 2
 	GameManager.heroe.ataque += 1
+	AudioManager.reproducir("sangre")
+	AudioManager.reproducir("runa")
 	log_evento("[color=red]El altar absorbe tu vitalidad.[/color]")
 	log_evento("[color=orange]Salud: %d | Ataque: %d[/color]" % [GameManager.heroe.salud, GameManager.heroe.ataque])
 	# Ofrecer usar de nuevo

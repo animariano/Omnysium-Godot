@@ -48,6 +48,7 @@ var texturas_dado = [
 ]
 
 func _ready():
+    AudioManager.reproducir_musica_combate()
     GameManager.efectos_enemigo = []
     # Conectar botones — ajustá las rutas a tu jerarquía real
     $Background/ActionButtons/AtacarButton.pressed.connect(_on_atacar)
@@ -209,6 +210,7 @@ func _on_atacar():
                 salud_enemigo -= dano_total
                 log_combate("[color=yellow]¡Anillo Crítico! Daño doble.[/color]")
         else:
+            AudioManager.reproducir("ataque_fallo")
             log_combate("[color=gray]¡Ataque fallido![/color]")
             if GameManager.items_comprados.has("sangre_caliente"):
                 sangre_caliente_activa = true
@@ -242,6 +244,7 @@ func _on_atacar():
                 salud_enemigo -= dano_final
                 log_combate("[color=yellow]¡Anillo Crítico! Daño doble.[/color]")
         else:
+            AudioManager.reproducir("ataque_fallo")
             log_combate("[color=gray]¡Ataque fallido![/color]")
             if GameManager.items_comprados.has("sangre_caliente"):
                 sangre_caliente_activa = true
@@ -266,6 +269,7 @@ func _on_especial():
     match h.clase:
         "Paladin":
             GameManager.heroe.salud = min(h.salud + 3, h.salud_maxima)
+            AudioManager.reproducir("curacion")
             log_combate("[color=cyan]Usaste Curar. Tu salud: %d[/color]" % GameManager.heroe.salud)
         "Mago":
             var dano = max(1, h.ataque / 2)
@@ -278,6 +282,7 @@ func _on_especial():
             salud_enemigo -= dano
             animar_golpe("enemigo")
             GameManager.heroe.salud = max(1, h.salud / 2)
+            AudioManager.reproducir("sangre")
             log_combate("[color=cyan]Cabezazo! Hiciste %d de daño. Tu salud: %d[/color]" % [dano, GameManager.heroe.salud])
         "Asesino":
             GameManager.aplicar_efecto("enemigo", "veneno", 3, 2)
@@ -286,6 +291,7 @@ func _on_especial():
             if  GameManager.heroe.salud > 2:
                 GameManager.heroe.salud -= 2
                 GameManager.heroe.ataque += 1
+                AudioManager.reproducir("debuff2")
                 log_combate("[color=orange]Pacto Oscuro![/color] [color=red]Pierdes 2 de salud [/color][color=orange]y ganas +1 de ataque.[/color]")
             else:
                 log_combate("[color=red]No tienes suficiente salud para usar Pacto Oscuro.[/color]")
@@ -311,9 +317,11 @@ func _on_definitiva():
             animar_golpe("enemigo") 
             salud_enemigo -= h.ataque
             GameManager.heroe.salud = min(h.salud + h.ataque, h.salud_maxima)
+            AudioManager.reproducir("curacion")
             log_combate("[color=yellow]Golpe Sanador! Daño: %d. Tu salud: %d[/color]" % [h.ataque, GameManager.heroe.salud])
         "Mago":
             GameManager.aplicar_efecto("heroe", "escudo_fuego", 9999, 2)  # 9999 = dura toda la partida, valor 2 = daño devuelto
+            AudioManager.reproducir("escudo_fuego")
             log_combate("[color=yellow]Escudo de Fuego activado![/color]")
         "Berserker":
             var dano = h.ataque * 3
@@ -333,6 +341,7 @@ func _on_definitiva():
                 log_combate("[color=gray]El enemigo tiene más del 50% de salud. La Ejecución falló.[/color]")
         "Caballero_carmesi":
                 GameManager.aplicar_efecto("heroe", "pacto_sangre", 9999, 0)
+                AudioManager.reproducir("runa")
                 log_combate("[color=orange]Pacto de Sangre activado. El próximo golpe te curará y dañará al enemigo.[/color]")
 
     actualizar_ui()
@@ -368,9 +377,12 @@ func turno_enemigo():
         await get_tree().create_timer(1.0).timeout
         iniciar_turno_jugador()
         return
-
-    await procesar_efectos_enemigo()
+    
+    #chequea si muere por algun efecto
+    var enemigo_murio = await procesar_efectos_enemigo()
     if not is_inside_tree():
+        return
+    if enemigo_murio:
         return
 
     var enemigo = GameManager.enemigo_actual()
@@ -381,6 +393,7 @@ func turno_enemigo():
     var critico_en_6 = ["Goblin", "Orco", "Hombre Lobo", "Elfo Oscuro"]
 
     if dado_enemigo == 6 and enemigo.nombre in roba_oro:
+        AudioManager.reproducir("oro")
         log_combate("[color=yellow]¡El %s te robó todo el oro![/color]" % enemigo.nombre)
         GameManager.heroe.oro = 0
         actualizar_ui()
@@ -408,10 +421,12 @@ func turno_enemigo():
         log_combate("[color=gray]La Máscara Frenética te impide esquivar.[/color]")
         aplicar_dano_entrante()
     elif tiene_dados_malditos or dado_esquive <= umbral_esquive:
+        AudioManager.reproducir("ataque_fallo")
         log_combate("[color=green]¡Esquivaste el ataque![/color]")
         if GameManager.items_comprados.has("calavera_burlona"):
             salud_enemigo -= 1
             animar_golpe("enemigo")
+            AudioManager.reproducir("sangre")
             log_combate("[color=green]Calavera Burlona: el enemigo recibe 1 de daño.[/color]")
     else:
         log_combate("[color=red]No pudiste esquivar.[/color]")
@@ -442,6 +457,7 @@ func aplicar_dano_entrante():
     # Manto Protector — primer ataque del combate ignorado
     if GameManager.items_comprados.has("manto_protector") and not manto_usado:
         manto_usado = true
+        AudioManager.reproducir("bloqueo")
         log_combate("[color=cyan]¡Manto Protector absorbió el ataque![/color]")
         return
 
@@ -449,6 +465,7 @@ func aplicar_dano_entrante():
     if GameManager.items_comprados.has("placas"):
         dano_final = max(0, dano_final - 1)
         log_combate("[color=cyan]Placas: daño reducido en 1.[/color]")
+        
     animar_golpe("heroe")
     GameManager.heroe.salud -= dano_final
     log_combate("[color=red]Recibiste %d de daño. Tu salud: %d[/color]" % [dano_final, GameManager.heroe.salud])
@@ -462,6 +479,8 @@ func aplicar_dano_entrante():
         )
         animar_golpe("enemigo")
         salud_enemigo -= dano_final
+        AudioManager.reproducir("runa")
+        AudioManager.reproducir("bloqueo")
         log_combate("[color=yellow]¡Pacto de Sangre! Te curás %d y el enemigo recibe %d de daño.[/color]" % [dano_final, dano_final])
         GameManager.efectos_heroe = GameManager.efectos_heroe.filter(func(e): return e.id != "pacto_sangre")
         actualizar_efectos_ui()
@@ -473,6 +492,7 @@ func aplicar_dano_entrante():
     if GameManager.tiene_efecto("heroe", "escudo_fuego"):
         var dano_devuelto = GameManager.get_valor_efecto("heroe", "escudo_fuego")
         animar_golpe("enemigo")
+        AudioManager.reproducir("escudo")
         salud_enemigo -= dano_devuelto
         log_combate("[color=cyan]Escudo de Fuego devolvió %d de daño![/color]" % dano_devuelto)
 
@@ -481,6 +501,7 @@ func aplicar_dano_entrante():
         GameManager.heroe.salud = 1
         GameManager.items_comprados.erase("tablilla_alma")
         cargar_inventario()  # actualizar el inventario visual
+        AudioManager.reproducir("curacion")
         log_combate("[color=yellow]¡La Tablilla de Alma te salvó! Reivís con 1 de salud.[/color]")
 
 func iniciar_turno_jugador():
@@ -503,10 +524,13 @@ func iniciar_turno_jugador():
         await get_tree().create_timer(1.0).timeout
         turno_enemigo()
         return
-
-    await procesar_efectos_heroe()
+    
+    #chequea si muere por algun efecto
+    var heroe_murio = await procesar_efectos_heroe()
     if not is_inside_tree():
         return
+    if heroe_murio:
+        return  # ← no continuar
 
     # Piedra de Regeneración (item)
     if GameManager.items_comprados.has("piedra_regen"):
@@ -540,6 +564,7 @@ func iniciar_turno_jugador():
 
 func chequear_muerte_enemigo():
     if salud_enemigo <= 0:
+        AudioManager.reproducir("oro")
         log_combate("[b]¡Venciste al %s! Ganaste 3 %s.[/b]" % [GameManager.enemigo_actual().nombre, GameManager.icono("moneda")])
         GameManager.heroe.oro += 3
         await get_tree().create_timer(1.5).timeout
@@ -630,13 +655,13 @@ func configurar_botones_accion():
         btn_definitiva.modulate = Color(1, 1, 1)
         agregar_tooltip(btn_definitiva, h.habilidad_definitiva + "\n(Cooldown: %d combates)" % GameManager.cooldown_definitiva_base)
 
-func procesar_efectos_heroe():
+func procesar_efectos_heroe() -> bool:
     var h = GameManager.heroe
-
     # Veneno
     if GameManager.tiene_efecto("heroe", "veneno"):
         var dano = GameManager.get_valor_efecto("heroe", "veneno")
-        animar_golpe("enemigo")
+        animar_golpe("heroe")
+        AudioManager.reproducir("debuff")
         GameManager.heroe.salud -= dano
         log_combate("[color=purple]☠ Veneno: perdés %d de salud.[/color]" % dano)
         if GameManager.heroe.salud <= 0:
@@ -649,19 +674,21 @@ func procesar_efectos_heroe():
                 actualizar_ui()
                 await get_tree().create_timer(1.0).timeout
                 await game_over()
-                return
+                return true  # ← murió
 
     # Regeneración
     if GameManager.tiene_efecto("heroe", "regeneracion"):
         var cura = GameManager.get_valor_efecto("heroe", "regeneracion")
-        GameManager.heroe.salud = min(h.salud + cura, h.salud_maxima)
+        AudioManager.reproducir("curacion")
+        GameManager.heroe.salud = min(GameManager.heroe.salud + cura, GameManager.heroe.salud_maxima)
         log_combate("[color=green]💚 Regeneración: recuperás %d de salud.[/color]" % cura)
 
     GameManager.reducir_duracion("heroe")
     actualizar_ui()
     actualizar_efectos_ui()
-
-func procesar_efectos_enemigo():
+    return false  # ← sigue vivo
+    
+func procesar_efectos_enemigo() -> bool:
     # Veneno
     if GameManager.tiene_efecto("enemigo", "veneno"):
         var dano = GameManager.get_valor_efecto("enemigo", "veneno")
@@ -671,18 +698,20 @@ func procesar_efectos_enemigo():
         if salud_enemigo <= 0:
             GameManager.reducir_duracion("enemigo")
             actualizar_ui()
+            actualizar_efectos_ui()
+            await get_tree().create_timer(1.0).timeout
             chequear_muerte_enemigo()
-            return
-
+            return true  # ← murió
     # Regeneración enemigo
     if GameManager.tiene_efecto("enemigo", "regeneracion"):
         var cura = GameManager.get_valor_efecto("enemigo", "regeneracion")
+        AudioManager.reproducir("curacion")
         salud_enemigo = min(salud_enemigo + cura, salud_maxima_enemigo)
         log_combate("[color=green]💚 El enemigo se regenera %d de salud.[/color]" % cura)
-
     GameManager.reducir_duracion("enemigo")
     actualizar_ui()
     actualizar_efectos_ui()
+    return false  # ← sigue vivo    
     
 var sprites_efectos = {
     "veneno":         preload("res://assets/effects/efecto_veneno.png"),
@@ -768,6 +797,15 @@ func gastar_accion():
         actualizar_ui()
 
 func animar_golpe(objetivo: String):
+    if objetivo == "enemigo":
+        match GameManager.heroe.clase:
+            "Paladin":   AudioManager.reproducir("golpe_berserker")
+            "Mago":      AudioManager.reproducir("golpe_mago")
+            "Berserker": AudioManager.reproducir("golpe_berserker")
+            "Asesino":   AudioManager.reproducir("golpe_asesino")
+            "Caballero_carmesi":           AudioManager.reproducir("golpe_espada")
+    else:
+        AudioManager.reproducir("golpe_espada", -5.0)
     if objetivo == "heroe":
         var anim = $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim
         anim.visible = true
