@@ -18,6 +18,7 @@ config/icon="uid://d34c55mwe01gs"
 [autoload]
 
 GameManager="*uid://binwy5tl7knld"
+SceneTransition="*uid://d18al622hk6ly"
 
 [display]
 

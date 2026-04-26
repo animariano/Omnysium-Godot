@@ -6,7 +6,6 @@ func _ready():
 
 func _on_play_pressed():
 	GameManager.reiniciar()
-	get_tree().change_scene_to_file("res://scenes/CharacterSelect.tscn")
-
+	SceneTransition.change_scene("res://scenes/CharacterSelect.tscn")
 func _on_quit_pressed():
 	get_tree().quit()

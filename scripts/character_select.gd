@@ -113,7 +113,7 @@ func _on_elegir(personaje: Dictionary):
 	}
 	GameManager.definitiva_cooldown = 0
 	GameManager.cooldown_definitiva_base = personaje.cooldown_definitiva
-	get_tree().change_scene_to_file("res://scenes/Combat.tscn")
+	SceneTransition.change_scene("res://scenes/Combat.tscn")
 
 func _input(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed:

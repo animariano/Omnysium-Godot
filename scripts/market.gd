@@ -120,4 +120,4 @@ func aplicar_efecto(item_id: String):
 			pass
 
 func _on_salir():
-	get_tree().change_scene_to_file("res://scenes/Event.tscn")
+	SceneTransition.change_scene("res://scenes/Event.tscn")

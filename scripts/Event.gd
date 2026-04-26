@@ -113,7 +113,7 @@ func _on_trampa_dado():
 		log_evento("[color=red]No lograste esquivar la trampa.[/color] Salud restante: %d" % GameManager.heroe.salud)
 		if GameManager.heroe.salud <= 0:
 			await get_tree().create_timer(1.0).timeout
-			get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+			SceneTransition.change_scene("res://scenes/GameOver.tscn")
 			return
 	terminar_evento()
 
@@ -179,7 +179,7 @@ func _on_cueva_oscuro_dado():
 		log_evento("[color=red]La roca te golpea! Perdés 3 de salud. Salud: %d[/color]" % GameManager.heroe.salud)
 		if GameManager.heroe.salud <= 0:
 			await get_tree().create_timer(1.0).timeout
-			get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+			SceneTransition.change_scene("res://scenes/GameOver.tscn")
 			return
 		agregar_boton("Continuar", func():
 			limpiar_opciones()
@@ -235,7 +235,7 @@ func _on_estatua_rezar():
 			log_evento("[color=red]La estatua cobra su precio. Perdés 2 de salud. Salud: %d[/color]" % GameManager.heroe.salud)
 			if GameManager.heroe.salud <= 0:
 				await get_tree().create_timer(1.0).timeout
-				get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+				SceneTransition.change_scene("res://scenes/GameOver.tscn")
 				return
 		else:
 			GameManager.heroe.oro += 2
@@ -337,7 +337,7 @@ func _on_vendedor_comprar():
 	limpiar_opciones()
 	log_evento("El vendedor sonríe y abre su bolso...")
 	await get_tree().create_timer(0.5).timeout
-	get_tree().change_scene_to_file("res://scenes/Market.tscn")
+	SceneTransition.change_scene("res://scenes/Market.tscn")
 
 func _on_vendedor_robar():
 	limpiar_opciones()
@@ -448,4 +448,4 @@ func _on_altar_alejarse():
 
 # ─── CONTINUAR ────────────────────────────────────────────────────
 func _on_continuar():
-	get_tree().change_scene_to_file("res://scenes/Combat.tscn")
+	SceneTransition.change_scene("res://scenes/Combat.tscn")
