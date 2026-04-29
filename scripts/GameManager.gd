@@ -40,7 +40,7 @@ var personajes_pool = [
 	{
 		"nombre": "Mago", "clase": "Mago",
 		"salud": 6, "ataque": 1,
-		"habilidad_especial": "Bola de Fuego (Mitad de daño, aplica vulnerabilidad)",
+		"habilidad_especial": "Bola de Fuego (Mitad de daño, aplica vulnerabilidad y debilidad)",
 		"habilidad_definitiva": "Escudo de Fuego (Devuelve 2 de daño)",
 		"cooldown_definitiva": 100
 	},

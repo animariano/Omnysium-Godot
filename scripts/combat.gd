@@ -1,5 +1,6 @@
 extends Control
 
+# ── Variables de combate ──────────────────────────────────────────
 var salud_enemigo = 0
 var salud_maxima_enemigo = 0
 var ataque_enemigo = 0
@@ -10,7 +11,7 @@ var dano_entrante = 0
 var es_critico = false
 var acciones_restantes = 1
 
-#objetos usados
+# ── Variables de items ────────────────────────────────────────────
 var manto_usado = false
 var sangre_caliente_activa = false
 var filo_creciente_bonus = 0
@@ -18,26 +19,28 @@ var idolo_ataque_bonus = 0
 var tiene_dados_malditos = false
 var amuleto_berserk_activo: bool = false
 
+# ── Sprites ───────────────────────────────────────────────────────
 var sprites_enemigos = {
-    "Goblin":          preload("res://assets/enemies/goblin.png"),
-    "Pirata":          preload("res://assets/enemies/pirata.png"),
-    "Orco":            preload("res://assets/enemies/orco.png"),
-    "Ladron":          preload("res://assets/enemies/ladron.png"),
-    "Vampiro":         preload("res://assets/enemies/vampiro.png"),
-    "Elfo Oscuro":     preload("res://assets/enemies/elfo_oscuro.png"),
-    "Hombre Lobo":     preload("res://assets/enemies/hombre_lobo.png"),
-    "Lider Cultista":  preload("res://assets/enemies/lider_cultista.png"),
-    "Demonio":         preload("res://assets/enemies/demonio.png"),
-    "Dragon":          preload("res://assets/enemies/dragon.png")
+    "Goblin":           preload("res://assets/enemies/goblin.png"),
+    "Pirata":           preload("res://assets/enemies/pirata.png"),
+    "Orco":             preload("res://assets/enemies/orco.png"),
+    "Ladron":           preload("res://assets/enemies/ladron.png"),
+    "Vampiro":          preload("res://assets/enemies/vampiro.png"),
+    "Elfo Oscuro":      preload("res://assets/enemies/elfo_oscuro.png"),
+    "Hombre Lobo":      preload("res://assets/enemies/hombre_lobo.png"),
+    "Lider Cultista":   preload("res://assets/enemies/lider_cultista.png"),
+    "Demonio":          preload("res://assets/enemies/demonio.png"),
+    "Dragon":           preload("res://assets/enemies/dragon.png")
 }
 
 var sprites_heroes = {
-    "Paladin":   preload("res://assets/characters/paladin.png"),
-    "Mago":      preload("res://assets/characters/mago.png"),
-    "Berserker": preload("res://assets/characters/berserker.png"),
-    "Asesino": preload("res://assets/characters/asesino.png"),
+    "Paladin":           preload("res://assets/characters/paladin.png"),
+    "Mago":              preload("res://assets/characters/mago.png"),
+    "Berserker":         preload("res://assets/characters/berserker.png"),
+    "Asesino":           preload("res://assets/characters/asesino.png"),
     "Caballero_carmesi": preload("res://assets/characters/caballero_carmesi.png")
 }
+
 var texturas_dado = [
     preload("res://assets/dado1.png"),
     preload("res://assets/dado2.png"),
@@ -47,28 +50,49 @@ var texturas_dado = [
     preload("res://assets/dado6.png"),
 ]
 
+# ── Referencias a nodos (@onready) ───────────────────────────────
+@onready var btn_atacar      = $Background/ActionButtons/AtacarButton
+@onready var btn_especial    = $Background/ActionButtons/EspecialButton
+@onready var btn_definitiva  = $Background/ActionButtons/DefinitivaButton
+
+@onready var heroe_image     = $Background/HeroePanel/VBoxContainer/HeroeImage
+@onready var heroe_name      = $Background/HeroePanel/VBoxContainer/HeroeNameLabel
+@onready var heroe_stats     = $Background/HeroePanel/VBoxContainer/HeroeStatsLabel
+@onready var heroe_barra     = $Background/HeroePanel/VBoxContainer/BarraSaludHeroe
+@onready var heroe_salud_lbl = $Background/HeroePanel/VBoxContainer/SaludLabel
+@onready var heroe_efectos   = $Background/HeroePanel/VBoxContainer/HeroeEfectosContainer
+@onready var heroe_hit_anim  = $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim
+
+@onready var enemigo_image     = $Background/EnemigoPanel/VBoxContainer/EnemigoImage
+@onready var enemigo_name      = $Background/EnemigoPanel/VBoxContainer/EnemigoNameLabel
+@onready var enemigo_stats     = $Background/EnemigoPanel/VBoxContainer/EnemigoStatsLabel
+@onready var enemigo_barra     = $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo
+@onready var enemigo_salud_lbl = $Background/EnemigoPanel/VBoxContainer/SaludLabel
+@onready var enemigo_efectos   = $Background/EnemigoPanel/VBoxContainer/EnemigoEfectosContainer
+@onready var enemigo_hit_anim  = $Background/EnemigoPanel/VBoxContainer/EnemigoImage/EnemigoHitAnim
+
+@onready var dado_texture    = $Background/CenterArea/DadoPanel/VBoxContainer/DadoTexture
+@onready var resultado_label = $Background/CenterArea/DadoPanel/VBoxContainer/ResultadoLabel
+@onready var turno_label     = $Background/TurnoLabel
+@onready var combat_log      = $Background/CombatLog
+@onready var inventario_grid = $Background/CenterArea/InventarioPanel/InventarioGrid
+
 func _ready():
     AudioManager.reproducir_musica_combate()
     GameManager.efectos_enemigo = []
-    # Conectar botones — ajustá las rutas a tu jerarquía real
-    $Background/ActionButtons/AtacarButton.pressed.connect(_on_atacar)
-    $Background/ActionButtons/EspecialButton.pressed.connect(_on_especial)
-    $Background/ActionButtons/DefinitivaButton.pressed.connect(_on_definitiva)
-    #$Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton.pressed.connect(_on_esquivar)
-    
-    $Background/HeroePanel/VBoxContainer/BarraSaludHeroe.max_value = GameManager.heroe.salud_maxima
-    $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.max_value = salud_maxima_enemigo
 
-    # El botón de esquive empieza oculto
+    btn_atacar.pressed.connect(_on_atacar)
+    btn_especial.pressed.connect(_on_especial)
+    btn_definitiva.pressed.connect(_on_definitiva)
+
+    heroe_barra.max_value = GameManager.heroe.salud_maxima
+    enemigo_barra.max_value = salud_maxima_enemigo
+
     $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton.visible = false
     $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton/AlertaAnim.visible = false
-    var alerta = $Background/CenterArea/DadoPanel/VBoxContainer/TirarDadoButton/AlertaAnim
-    alerta.visible = false
-    # Animacion golpe escondida
-    $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim.animation_finished.connect(
-    func(): $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim.visible = false)
-    $Background/EnemigoPanel/VBoxContainer/EnemigoImage/EnemigoHitAnim.animation_finished.connect(
-    func(): $Background/EnemigoPanel/VBoxContainer/EnemigoImage/EnemigoHitAnim.visible = false)
+
+    heroe_hit_anim.animation_finished.connect(func(): heroe_hit_anim.visible = false)
+    enemigo_hit_anim.animation_finished.connect(func(): enemigo_hit_anim.visible = false)
 
     var enemigo = GameManager.enemigo_actual()
     salud_enemigo = enemigo.salud
@@ -85,63 +109,55 @@ func _ready():
     cargar_inventario()
     configurar_botones_accion()
     actualizar_efectos_ui()
+
     if GameManager.items_comprados.has("piedra_regen"):
         GameManager.aplicar_efecto("heroe", "regeneracion", 9999, 1)
         actualizar_efectos_ui()
+
     log_combate("Te topas con [b]" + enemigo.nombre + "[/b]! Salud: " + str(enemigo.salud) + " | Ataque: " + str(enemigo.ataque))
 
 func actualizar_ui():
     var h = GameManager.heroe
     var enemigo = GameManager.enemigo_actual()
-    
+
     # Revertir amuleto si salud sube sobre 2
-    if GameManager.items_comprados.has("amuleto_berserk") and amuleto_berserk_activo and GameManager.heroe.salud > 2:
+    if GameManager.items_comprados.has("amuleto_berserk") and amuleto_berserk_activo and h.salud > 2:
         GameManager.heroe.ataque -= 3
         amuleto_berserk_activo = false
         log_combate("[color=gray]Amuleto Berserk desactivado.[/color]")
 
-    $Background/HeroePanel/VBoxContainer/HeroeImage.texture = sprites_heroes[h.clase]
-    $Background/HeroePanel/VBoxContainer/HeroeNameLabel.text = h.nombre
-    $Background/HeroePanel/VBoxContainer/HeroeStatsLabel.text = " %s %d    %s %d" % [
-        GameManager.icono("espada"),
-        h.ataque,
-        GameManager.icono("moneda"),
-        h.oro
-    ]
-    #panel heroe
-    $Background/HeroePanel/VBoxContainer/BarraSaludHeroe.max_value = h.salud_maxima
-    $Background/HeroePanel/VBoxContainer/BarraSaludHeroe.set_target(h.salud)
-    $Background/HeroePanel/VBoxContainer/SaludLabel.text = "%d/%d" % [h.salud, h.salud_maxima]
-    #panel enemigo
-    $Background/EnemigoPanel/VBoxContainer/EnemigoImage.texture = sprites_enemigos[enemigo.nombre]
-    $Background/EnemigoPanel/VBoxContainer/EnemigoNameLabel.text = enemigo.nombre
-    $Background/EnemigoPanel/VBoxContainer/EnemigoStatsLabel.text = "%s %d" % [GameManager.icono("espada"), ataque_enemigo]
-    $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.max_value = enemigo.salud  # salud inicial
-    $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.max_value = salud_maxima_enemigo
-    $Background/EnemigoPanel/VBoxContainer/BarraSaludEnemigo.set_target(salud_enemigo)
-    $Background/EnemigoPanel/VBoxContainer/SaludLabel.text = "%d/%d" % [salud_enemigo, salud_maxima_enemigo]
+    heroe_image.texture       = sprites_heroes[h.clase]
+    heroe_name.text           = h.nombre
+    heroe_stats.text          = " %s %d    %s %d" % [GameManager.icono("espada"), h.ataque, GameManager.icono("moneda"), h.oro]
+    heroe_barra.max_value     = h.salud_maxima
+    heroe_barra.set_target(h.salud)
+    heroe_salud_lbl.text      = "%d/%d" % [h.salud, h.salud_maxima]
 
-    $Background/TurnoLabel.text = "[color=green]Tu turno![/color]" if turno_jugador else "[color=red]Turno del enemigo[/color]"
+    enemigo_image.texture     = sprites_enemigos[enemigo.nombre]
+    enemigo_name.text         = enemigo.nombre
+    enemigo_stats.text        = "%s %d" % [GameManager.icono("espada"), ataque_enemigo]
+    enemigo_barra.max_value   = salud_maxima_enemigo
+    enemigo_barra.set_target(salud_enemigo)
+    enemigo_salud_lbl.text    = "%d/%d" % [salud_enemigo, salud_maxima_enemigo]
 
-    # Botones de acción solo activos en turno del jugador y sin esquive pendiente
+    turno_label.text = "[color=green]Tu turno![/color]" if turno_jugador else "[color=red]Turno del enemigo[/color]"
+
     var puede_actuar = turno_jugador
-    $Background/ActionButtons/AtacarButton.disabled = not puede_actuar
-    $Background/ActionButtons/EspecialButton.disabled = not puede_actuar or especial_cooldown_turnos > 0
-    $Background/ActionButtons/DefinitivaButton.disabled = not puede_actuar or GameManager.definitiva_cooldown > 0
+    btn_atacar.disabled    = not puede_actuar
+    btn_especial.disabled  = not puede_actuar or especial_cooldown_turnos > 0
+    btn_definitiva.disabled = not puede_actuar or GameManager.definitiva_cooldown > 0
+
 func log_combate(texto: String):
-    $Background/CombatLog.append_text("\n" + texto)
+    combat_log.append_text("\n" + texto)
 
 func mostrar_dado(resultado: int):
-    $Background/CenterArea/DadoPanel/VBoxContainer/DadoTexture.texture = texturas_dado[resultado - 1]
-    $Background/CenterArea/DadoPanel/VBoxContainer/ResultadoLabel.text = "Dado: %d" % resultado
-    
+    dado_texture.texture  = texturas_dado[resultado - 1]
+    resultado_label.text  = "Dado: %d" % resultado
+
 func animar_dado(resultado: int):
-    # Muestra caras aleatorias por 600ms antes del resultado final
     for i in range(12):
-        var cara_random = randi() % 6
-        $Background/CenterArea/DadoPanel/VBoxContainer/DadoTexture.texture = texturas_dado[cara_random]
+        dado_texture.texture = texturas_dado[randi() % 6]
         await get_tree().create_timer(0.03).timeout
-    # Muestra el resultado final
     mostrar_dado(resultado)
 
 # ─── TURNO DEL JUGADOR ───────────────────────────────────────────
@@ -275,8 +291,9 @@ func _on_especial():
             var dano = max(1, h.ataque / 2)
             salud_enemigo -= dano
             GameManager.aplicar_efecto("enemigo", "vulnerabilidad", 3, 1)
+            GameManager.aplicar_efecto("enemigo", "debilidad", 3, 1) #ver porque no funciona esto
             animar_golpe("enemigo")
-            log_combate("[color=cyan]Bola de Fuego! Hiciste %d de daño directo.[/color]" % dano)
+            log_combate("[color=orange]Bola de Fuego! Hiciste %d de daño directo. Lo debilitas y lo hacer vulnerable[/color]" % dano)
         "Berserker":
             var dano = h.ataque * 2
             salud_enemigo -= dano
@@ -448,31 +465,18 @@ func turno_enemigo():
 
 func aplicar_dano_entrante():
     var dano_final = dano_entrante
-    
-    # Vulnerabilidad — recibe más daño
-    if GameManager.tiene_efecto("heroe", "vulnerabilidad"):
-        dano_final = int(dano_final * 1.5)
-        log_combate("[color=red]💢 Vulnerabilidad: +50% daño recibido.[/color]")
-        
-    # Manto Protector — primer ataque del combate ignorado
+
+    # Manto Protector — PRIMERO, antes de cualquier cálculo
     if GameManager.items_comprados.has("manto_protector") and not manto_usado:
         manto_usado = true
         AudioManager.reproducir("bloqueo")
         log_combate("[color=cyan]¡Manto Protector absorbió el ataque![/color]")
         return
 
-    # Placas — reducen daño en 1
-    if GameManager.items_comprados.has("placas"):
-        dano_final = max(0, dano_final - 1)
-        log_combate("[color=cyan]Placas: daño reducido en 1.[/color]")
-        
-    animar_golpe("heroe")
-    GameManager.heroe.salud -= dano_final
-    log_combate("[color=red]Recibiste %d de daño. Tu salud: %d[/color]" % [dano_final, GameManager.heroe.salud])
-
-  #  PACTO DE SANGRE
+    # Pacto de Sangre — SEGUNDO, antes de recibir daño
     if GameManager.tiene_efecto("heroe", "pacto_sangre"):
-        #GameManager.consumir_efecto("heroe", "pacto_sangre") ver como borrar
+        # El héroe recibe el daño pero se cura el doble
+        GameManager.heroe.salud -= dano_final
         GameManager.heroe.salud = min(
             GameManager.heroe.salud + dano_final * 2,
             GameManager.heroe.salud_maxima
@@ -487,8 +491,24 @@ func aplicar_dano_entrante():
         actualizar_ui()
         if salud_enemigo <= 0:
             chequear_muerte_enemigo()
-        return  # cancela el daño normal
-    # Escudo de Fuego
+        return
+
+    # Vulnerabilidad — solo si no hay protección
+    if GameManager.tiene_efecto("heroe", "vulnerabilidad"):
+        dano_final = int(dano_final * 1.5)
+        log_combate("[color=red]💢 Vulnerabilidad: +50% daño recibido.[/color]")
+
+    # Placas — reducen daño en 1
+    if GameManager.items_comprados.has("placas"):
+        dano_final = max(0, dano_final - 1)
+        log_combate("[color=cyan]Placas: daño reducido en 1.[/color]")
+
+    # Aplicar daño
+    animar_golpe("heroe")
+    GameManager.heroe.salud -= dano_final
+    log_combate("[color=red]Recibiste %d de daño. Tu salud: %d[/color]" % [dano_final, GameManager.heroe.salud])
+
+    # Escudo de Fuego — devuelve daño
     if GameManager.tiene_efecto("heroe", "escudo_fuego"):
         var dano_devuelto = GameManager.get_valor_efecto("heroe", "escudo_fuego")
         animar_golpe("enemigo")
@@ -496,14 +516,14 @@ func aplicar_dano_entrante():
         salud_enemigo -= dano_devuelto
         log_combate("[color=cyan]Escudo de Fuego devolvió %d de daño![/color]" % dano_devuelto)
 
-    # Tablilla de Alma — reivís con 1 si morís
+    # Tablilla de Alma
     if GameManager.heroe.salud <= 0 and GameManager.items_comprados.has("tablilla_alma"):
         GameManager.heroe.salud = 1
         GameManager.items_comprados.erase("tablilla_alma")
-        cargar_inventario()  # actualizar el inventario visual
+        cargar_inventario()
         AudioManager.reproducir("curacion")
-        log_combate("[color=yellow]¡La Tablilla de Alma te salvó! Reivís con 1 de salud.[/color]")
-
+        log_combate("[color=yellow]¡La Tablilla de Alma te salvó![/color]")
+        
 func iniciar_turno_jugador():
     acciones_restantes = 2 if GameManager.items_comprados.has("mascara_frenetica") else 1
     if especial_cooldown_turnos > 0:
@@ -594,6 +614,10 @@ func cargar_inventario():
     for child in grid.get_children():
         child.queue_free()
 
+    # Calcular tamaño según viewport
+    var viewport_width = get_viewport_rect().size.x
+    var tamano_icono = 80 if viewport_width < 800 else 60  # más grande en pantallas chicas
+
     if GameManager.items_comprados.is_empty():
         var label = Label.new()
         label.text = "Sin items"
@@ -607,7 +631,7 @@ func cargar_inventario():
         var textura = load("res://assets/items/" + item_data[0].sprite)
         var img = TextureRect.new()
         img.texture = textura
-        img.custom_minimum_size = Vector2(60, 60)
+        img.custom_minimum_size = Vector2(tamano_icono, tamano_icono)  # ← tamaño dinámico
         img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
         img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
         var tip = load("res://scripts/Tooltip.gd").new()
@@ -724,14 +748,9 @@ var sprites_efectos = {
 }
 
 func actualizar_efectos_ui():
-    _actualizar_efectos_container(
-        $Background/HeroePanel/VBoxContainer/HeroeEfectosContainer,
-        GameManager.efectos_heroe
-    )
-    _actualizar_efectos_container(
-        $Background/EnemigoPanel/VBoxContainer/EnemigoEfectosContainer,
-        GameManager.efectos_enemigo
-    )
+    _actualizar_efectos_container(heroe_efectos, GameManager.efectos_heroe)
+    _actualizar_efectos_container(enemigo_efectos, GameManager.efectos_enemigo)
+    
 var descripciones_efectos = {
     "veneno":         "Recibís daño por turno.",
     "vulnerabilidad": "Recibís 50% más de daño.",
@@ -797,23 +816,20 @@ func gastar_accion():
         actualizar_ui()
 
 func animar_golpe(objetivo: String):
-    if objetivo == "enemigo":
-        match GameManager.heroe.clase:
-            "Paladin":   AudioManager.reproducir("golpe_berserker")
-            "Mago":      AudioManager.reproducir("golpe_mago")
-            "Berserker": AudioManager.reproducir("golpe_berserker")
-            "Asesino":   AudioManager.reproducir("golpe_asesino")
-            "Caballero_carmesi":           AudioManager.reproducir("golpe_espada")
-    else:
-        AudioManager.reproducir("golpe_espada", -5.0)
     if objetivo == "heroe":
-        var anim = $Background/HeroePanel/VBoxContainer/HeroeImage/HeroeHitAnim
-        anim.visible = true
-        anim.play("hit")
+        heroe_hit_anim.visible = true
+        heroe_hit_anim.play("hit")
+        AudioManager.reproducir("humano_dano")
     else:
-        var anim = $Background/EnemigoPanel/VBoxContainer/EnemigoImage/EnemigoHitAnim
-        anim.visible = true
-        anim.play("hit")
+        match GameManager.heroe.clase:
+            "Paladin":           AudioManager.reproducir("golpe_berserker")
+            "Mago":              AudioManager.reproducir("golpe_mago")
+            "Berserker":         AudioManager.reproducir("golpe_berserker")
+            "Asesino":           AudioManager.reproducir("golpe_asesino")
+            "Caballero_carmesi": AudioManager.reproducir("golpe_espada")
+            _:                   AudioManager.reproducir("golpe_espada")
+        enemigo_hit_anim.visible = true
+        enemigo_hit_anim.play("hit")
 
 func agregar_tooltip(nodo: Control, texto: String):
     # Eliminar tooltip existente si hay uno

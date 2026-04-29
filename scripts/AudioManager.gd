@@ -4,6 +4,7 @@ var sonidos = {}
 var musica_actual: AudioStreamPlayer = null
 var musicas_combate = []
 
+
 func _ready():
 	sonidos = {
 		# Efectos

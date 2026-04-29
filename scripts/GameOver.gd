@@ -5,4 +5,4 @@ func _ready():
 
 func _on_menu():
 	GameManager.reiniciar()
-	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+	SceneTransition.change_scene("res://scenes/MainMenu.tscn")
