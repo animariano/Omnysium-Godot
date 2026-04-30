@@ -134,10 +134,9 @@ func cargar_equipo():
 func cargar_cofre():
 	AudioManager.reproducir_musica("bosque")
 	log_evento("Descubriste un cofre oculto!")
-	var resultado = randi() % 6 + 1
-	GameManager.heroe.oro += resultado
-	resultado = resultado+3
-	log_evento("[color=yellow]Encontrás oro en el cofre! Ganás %d %s.[/color]" % [resultado, GameManager.icono("moneda"),])
+	var oro_ganado = randi() % 6 + 3  # 4-9 de oro directo
+	GameManager.heroe.oro += oro_ganado
+	log_evento("[color=yellow]Ganás %d %s![/color]" % [oro_ganado, GameManager.icono("moneda")])
 	terminar_evento()
 
 # ─── FUENTE ───────────────────────────────────────────────────────
@@ -419,7 +418,7 @@ func _on_alquimista_tomar():
 	limpiar_opciones()
 	log_evento("Tomás la pócima de un sorbo...")
 	agregar_boton("Tirar dado", func():
-		await AudioManager.reproducir("pocion")
+		AudioManager.reproducir("pocion")
 		limpiar_opciones()
 		var resultado = randi() % 6 + 1
 		await animar_dado(resultado)
