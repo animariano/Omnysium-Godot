@@ -97,33 +97,7 @@ func _on_comprar(indice: int):
 				b.disabled = GameManager.heroe.oro < items_ofrecidos[i].costo
 
 func aplicar_efecto(item_id: String):
-	var h = GameManager.heroe
-	match item_id:
-		"pocion_salud":
-			GameManager.heroe.salud = min(h.salud + 2, h.salud_maxima)
-		"espada_hierro":
-			GameManager.heroe.ataque += 1
-		"armadura_cuero":
-			GameManager.heroe.salud_maxima += 2
-			GameManager.heroe.salud += 2
-		"espada_acero":
-			GameManager.heroe.ataque += 2
-		"armadura_placas":
-			GameManager.heroe.salud_maxima += 4
-			GameManager.heroe.salud += 4
-		"piedra_salud":
-			GameManager.heroe.salud_maxima += 2
-			GameManager.heroe.salud += 2
-		"corazon_cristal":
-			GameManager.heroe.salud_maxima = 3
-			GameManager.heroe.salud = min(h.salud, 3)
-			GameManager.heroe.ataque *= 2
-		"runa_poder":
-			GameManager.heroe.ataque += 4
-		_:
-			# Items pasivos — solo se registran como comprados,
-			# su efecto se aplica en Combat.gd
-			pass
+	GameManager.aplicar_efecto_item(item_id)
 
 func _on_salir():
 	SceneTransition.change_scene("res://scenes/Event.tscn")

@@ -418,7 +418,11 @@ func turno_enemigo():
 		iniciar_turno_jugador()
 		return
 
-	if dado_enemigo == 6 and enemigo.nombre in critico_en_6:
+	if GameManager.tiene_efecto("enemigo", "debilidad"):
+		dano_entrante = enemigo.ataque / 2
+		log_combate("[color=gray]⬇ El enemigo está debilitado: ataque reducido al 50%.[/color]")
+		
+	elif dado_enemigo == 6 and enemigo.nombre in critico_en_6:
 		dano_entrante = enemigo.ataque * 2
 		es_critico = true
 		log_combate("[color=red]¡%s lanza un golpe crítico! Daño potencial: %d.[/color]" % [enemigo.nombre, dano_entrante])

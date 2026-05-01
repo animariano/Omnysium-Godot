@@ -320,29 +320,7 @@ func _on_mochila_ignorar():
 	terminar_evento()
 
 func _aplicar_efecto_item(item_id: String):
-	var h = GameManager.heroe
-	match item_id:
-		"pocion_salud":
-			GameManager.heroe.salud = min(h.salud + 2, h.salud_maxima)
-		"espada_hierro":
-			GameManager.heroe.ataque += 1
-		"armadura_cuero":
-			GameManager.heroe.salud_maxima += 2
-			GameManager.heroe.salud += 2
-		"espada_acero":
-			GameManager.heroe.ataque += 2
-		"armadura_placas":
-			GameManager.heroe.salud_maxima += 4
-			GameManager.heroe.salud += 4
-		"piedra_salud":
-			GameManager.heroe.salud_maxima += 2
-			GameManager.heroe.salud += 2
-		"corazon_cristal":
-			GameManager.heroe.salud_maxima = 3
-			GameManager.heroe.salud = min(h.salud, 3)
-			GameManager.heroe.ataque *= 2
-		"runa_poder":
-			GameManager.heroe.ataque += 4
+	GameManager.aplicar_efecto_item(item_id)
 
 # ─── VENDEDOR AMBULANTE ──────────────────────────────────────────
 func cargar_vendedor():

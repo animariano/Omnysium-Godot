@@ -219,3 +219,29 @@ func get_valor_efecto(objetivo: String, id: String) -> int:
             return e.valor
     return 0
    
+func aplicar_efecto_item(item_id: String):
+    var h = heroe
+    match item_id:
+        "pocion_salud":
+            heroe.salud = min(h.salud + 2, h.salud_maxima)
+        "espada_hierro":
+            heroe.ataque += 1
+        "armadura_cuero":
+            heroe.salud_maxima += 2
+            heroe.salud += 2
+        "armadura_placas":
+            heroe.salud_maxima += 4
+            heroe.salud += 4
+        "espada_acero":
+            heroe.ataque += 2
+        "piedra_salud":
+            heroe.salud_maxima += 2
+            heroe.salud += 2
+        "corazon_cristal":
+            heroe.salud_maxima = 3
+            heroe.salud = min(h.salud, 3)
+            heroe.ataque *= 2
+        "runa_poder":
+            heroe.ataque += 4
+        _:
+            pass  # items pasivos, se activan en combat.gd
